@@ -31,10 +31,6 @@ function Game:update(dt)
 end
 
 G.FUNCS.cry_intro_controller = function()
-	if Jen then
-		G.PROFILES[G.SETTINGS.profile].cry_intro_complete = true
-		G.PROFILES[G.SETTINGS.profile].cry_gameset = "madness"
-	end
 	G.PROFILES[G.SETTINGS.profile].cry_intro_progress = G.PROFILES[G.SETTINGS.profile].cry_intro_progress
 		or {
 			state = "start",
