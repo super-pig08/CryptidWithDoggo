@@ -4305,7 +4305,7 @@ local pointer = {
 					current_card = i
 				end
 			end
-			if current_card then
+			if current_card and not Cryptid.pointerblist[current_card] then
 				local created = false
 				if
 					G.P_CENTERS[current_card].set == "Joker"
@@ -4316,6 +4316,7 @@ local pointer = {
 							and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit
 							and not G.GAME.banned_keys[current_card]
 							and (G.P_CENTERS[current_card].rarity ~= "cry_exotic" or #SMODS.find_card("j_jen_p03") > 0)
+							and not Cryptid.pointerblist[G.P_CENTERS[current_card].rarity]
 							and not (Jen and Jen.overpowered(G.P_CENTERS[current_card].rarity))
 						)
 					)
@@ -4332,6 +4333,7 @@ local pointer = {
 						G.DEBUG_POINTER
 						or (
 							G.P_CENTERS[current_card].set ~= "jen_omegaconsumable"
+							and not Cryptid.pointerblist[G.P_CENTERS[current_card].set]
 							and #G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit
 							and not G.GAME.banned_keys[current_card]
 						)
