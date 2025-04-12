@@ -1765,7 +1765,7 @@ items = {
 	candy_basket,
 	blacklist,
 	--ghost,
-	possessed,
+	--possessed,
 	spookydeck,
 	candy_dagger,
 	candy_cane,
