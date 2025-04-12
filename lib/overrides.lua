@@ -1367,4 +1367,5 @@ function set_consumeable_usage(card)
 	if nextindex > 3 then
 		table.remove(G.GAME.cry_last_used_consumeables, 1)
 	end
+	scuref(card)
 end
