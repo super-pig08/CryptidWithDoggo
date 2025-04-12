@@ -4021,6 +4021,11 @@ local pointer = {
 			end
 			G.FUNCS.pointer_apply()
 		end
+		local blacklist = {
+		}
+		for k, v in pairs(blacklist) do
+			Cryptid.pointerblist[k] = v
+		end
 		local aliases = {
 			-- Vanilla Jokers
 			jimbo = "joker",
@@ -4282,17 +4287,21 @@ local pointer = {
 			local entered_card = G.ENTERED_CARD
 			G.PREVIOUS_ENTERED_CARD = G.ENTERED_CARD
 			local aliases = Cryptid.aliases
+			local blist = Cryptid.pointerblist
 			if aliases[apply_lower(entered_card)] then
+				print("cry aliases")
 				entered_card = aliases[apply_lower(entered_card)]
 			end
 			for i, v in pairs(G.P_CENTERS) do
 				if v.name and apply_lower(entered_card) == apply_lower(v.name) then
+					print("Create thing")
 					current_card = i
 				end
 				if apply_lower(entered_card) == apply_lower(i) then
 					current_card = i
 				end
 				if apply_lower(entered_card) == apply_lower(localize({ type = "name_text", set = v.set, key = i })) then
+					print("name and id")
 					current_card = i
 				end
 			end
@@ -4311,6 +4320,7 @@ local pointer = {
 						)
 					)
 				then
+					print("joker")
 					local card = create_card("Joker", G.jokers, nil, nil, nil, nil, current_card)
 					card:add_to_deck()
 					G.jokers:emplace(card)
@@ -4329,8 +4339,10 @@ local pointer = {
 				then
 					local card = create_card("Consumeable", G.consumeables, nil, nil, nil, nil, current_card)
 					if card.ability.name and card.ability.name == "cry-Chambered" then
+						print("some point function6")
 						card.ability.extra.num_copies = 1
 					end
+					print("consumable")
 					card:add_to_deck()
 					G.consumeables:emplace(card)
 					created = true
