@@ -522,7 +522,7 @@ Cryptid.big_num_blacklist = {
 
 Cryptid.mod_whitelist = {
 	Cryptid = true,
-	
+
 	-- Add your ModName here if you want your mod to have it's jokers' values go into BigNum
 	-- FORMAT: <ModName> = true,
 	-- TARGET: BigNum Mod Whitelist
