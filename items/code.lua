@@ -4021,8 +4021,7 @@ local pointer = {
 			end
 			G.FUNCS.pointer_apply()
 		end
-		local blacklist = {
-		}
+		local blacklist = {}
 		for k, v in pairs(blacklist) do
 			Cryptid.pointerblist[k] = v
 		end
