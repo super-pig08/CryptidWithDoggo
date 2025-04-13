@@ -1104,7 +1104,7 @@ local compound_interest = {
 
 			card.ability.extra.percent =
 				lenient_bignum(to_big(card.ability.extra.percent) + card.ability.extra.percent_mod)
-				
+
 			Cryptid.apply_scale_mod(card, card.ability.extra.percent_mod, old, card.ability.extra.percent, {
 				base = { { "extra", "percent" } },
 				scaler = { { "extra", "percent_mod" } },
