@@ -514,93 +514,19 @@ end
 
 Cryptid.big_num_blacklist = {
 	-- empty for now add more later
+
+	-- Add your Jokers here if you *don't* want to have it's numbers go into BigNum
+	-- FORMAT: <Joker Key ("j_cry_oil_lamp")> = true,
+	-- TARGET: BigNum Black List
 }
 
---[[
-	List of immutable jokers (these will return false for is_card_big):
-	Cryptid:
-		Epic:
-			sync_catalyst
-			canvas
-			error_joker
-			M
-			double_scale
-			curse_sob
-			bonusjoker
-			altgoogol
-			soccer
-
-		Exotic:
-			speculo
-			effarcire
-			circulus_pistoris
-			gemino
-
-		M:
-			jollysus
-			bubblem
-			loopy
-			reverse
-
-		Misc_Jokers:
-			happyhouse
-			maximized
-			queensgambit
-			seal_the_deal
-			maze
-			panopticon
-			happy
-			translucent
-			kscope
-			oldinvisible
-			necromancer
-			lebaron_james
-			huntingseason
-			eyeofhagane
-		
-		Spooky:
-			wrapped
-			choco_dice
-
-	Base:
-		Fortune Teller
-		Shoot the Moon
-		Riff-raff
-		Chaos the Clown
-		Dusk
-		Mime
-		Hack
-		Sock and Buskin
-		Invisible Joker
-		Swashbuckler
-		Smeared Joker
-		Certificate
-		Mr. Bones
-		Diet Cola
-		Luchador
-		Midas Mask
-		Shortcut
-		Seance
-		Superposition
-		Sixth Sense
-		DNA
-		Splash
-		Supernova
-		Pareidolia
-		Raised Fist
-		Marble Joker
-		Four Fingers
-		Joker Stencil
-		Showman
-		Blueprint
-		Oops! All 6s
-		Brainstorm
-		Cartomancer
-		Astronomer
-		Burnt Joker
-		Chicot
-		Perkeo
-]]
+Cryptid.mod_whitelist = {
+	Cryptid = true,
+	
+	-- Add your ModName here if you want your mod to have it's jokers' values go into BigNum
+	-- FORMAT: <ModName> = true,
+	-- TARGET: BigNum Mod Whitelist
+}
 
 function Cryptid.is_card_big(joker)
 	local center = joker.config and joker.config.center
@@ -609,6 +535,10 @@ function Cryptid.is_card_big(joker)
 	end
 
 	if center.immutable and center.immutable == true then
+		return false
+	end
+
+	if center.mod and not Cryptid.mod_whitelist[center.mod.name] then
 		return false
 	end
 
