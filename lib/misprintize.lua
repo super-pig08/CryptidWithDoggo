@@ -86,7 +86,7 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 			then
 				return false
 			end
-		
+
 			return Cryptid.misprintize_value_blacklist[k] or true
 		end
 
@@ -116,8 +116,7 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 									or name == "j_hallucination"
 								) and k == "extra"
 							)
-						) 
-						and num_too_big(initial, min, max, prob_max)
+						) and num_too_big(initial, min, max, prob_max)
 					then
 						initial = Cryptid.base_values[name][k] * prob_max
 						min = 1
@@ -130,16 +129,9 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 						big
 					)
 				end
-			elseif
-				not (k == "immutable")
-				and not (k == "colour")
-			then
+			elseif not (k == "immutable") and not (k == "colour") then
 				for _k, _v in pairs(tbl[k]) do
-					if
-						is_number(tbl[k][_k])
-						and not (_k == "d_size")
-						and not (_k == "h_size")
-					then --Refer to above
+					if is_number(tbl[k][_k]) and not (_k == "d_size") and not (_k == "h_size") then --Refer to above
 						if not Cryptid.base_values[name] then
 							Cryptid.base_values[name] = {}
 						end
