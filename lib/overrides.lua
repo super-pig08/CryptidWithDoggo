@@ -109,7 +109,7 @@ function Blind:defeat(s)
 	dft(self, s)
 	local obj = self.config.blind
 	-- Ignore blinds with loc_vars because orb does not properly work with them yet
-	if obj.boss and (obj.boss.no_orb or obj.boss.epic or obj.loc_vars) then
+	if obj.boss and (obj.boss.no_orb or obj.loc_vars) then
 		return
 	end
 	if
