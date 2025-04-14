@@ -889,10 +889,10 @@ local pointer = {
 }
 
 local pointeritems = {
-    pointer,
+	pointer,
 }
 
 return {
 	name = "Pointer://",
-    items = pointeritems,
+	items = pointeritems,
 }
