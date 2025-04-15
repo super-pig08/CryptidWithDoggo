@@ -79,6 +79,7 @@ local ballin = {
 			{ id = "c_grim" },
 			{ id = "c_incantation" },
 			{ id = "c_cry_eclipse" },
+			{ id = "c_cry_instability" },
 			{ id = "c_cry_class" },
 		},
 		banned_other = {},
