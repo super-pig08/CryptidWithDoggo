@@ -1758,10 +1758,10 @@ local meld = {
 local abstract = {
 	cry_credits = {
 		idea = {
-			"D.J.",
+			"lolxddj",
 		},
 		art = {
-			"D.J.",
+			"lolxddj",
 		},
 		code = {
 			"70UNIK",
@@ -1841,10 +1841,10 @@ local abstract = {
 local instability = {
 	cry_credits = {
 		idea = {
-			"D.J.",
+			"lolxddj",
 		},
 		art = {
-			"D.J.",
+			"lolxddj",
 		},
 		code = {
 			"70UNIK",
@@ -1872,10 +1872,10 @@ local instability = {
 local sock_and_sock = {
 	cry_credits = {
 		idea = {
-			"D.J.",
+			"lolxddj",
 		},
 		art = {
-			"D.J.",
+			"lolxddj",
 		},
 		code = {
 			"70UNIK",
