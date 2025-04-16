@@ -156,18 +156,6 @@ payload = '''
 '''
 match_indent = true
 
-[[patches]]
-[patches.pattern]
-target = "functions/misc_functions.lua"
-pattern = '''vals[curr[1]:get_id()] = curr'''
-position = "after"
-payload = '''
-    if curr[1]:get_id() == (SMODS.Rank.max_id.value + 1) then
-        print(curr[1]:get_id() .. "    " .. SMODS.Rank.max_id.value + 1)
-    end
-'''
-match_indent = true
-
 ## Force abstract cards to be only slightly above stone cards 
 
 [[patches]]

@@ -1785,7 +1785,7 @@ local abstract = {
 	--NEW! specific_suit suit. Like abstracted!
 	specific_suit = 'cry_abstract',
 	specific_rank = 'cry_abstract',
-	config = { extra = {Emult = 1.15, odds_after_play = 2, odds_after_round = 4,marked = false} },
+	config = { extra = {Emult = 1.15, odds_after_play = 2, odds_after_round = 4,marked = false,survive = false} },
 	--#1# emult, #2# in #3# chance card is destroyed after play, #4# in #5$ chance card is destroyed at end of round (even discarded or in deck)
 	loc_vars = function(self, info_queue, card)
 		return {
@@ -1801,14 +1801,17 @@ local abstract = {
 		--Druing scoring
 		if
 		context.cardarea == G.play
-		and context.main_scoring and
-		not context.repetition
+		and context.main_scoring
 		and not card.ability.extra.marked 
 		and not card.ability.eternal and 
+		not card.ability.extra.survive and --this presvents repitition of shatter chance by shutting it out once it confirms to "survive"
 		pseudorandom('cry_abstract_destroy') 
 		< cry_prob(card.ability.cry_prob, card.ability.extra.odds_after_play, card.ability.cry_rigged) / card.ability.extra.odds_after_play
 		then -- the 'card.area' part makes sure the card has a chance to survive if in the play area
 			card.ability.extra.marked = true
+		elseif context.cardarea == G.play
+		and context.main_scoring and not card.ability.extra.marked then
+			card.ability.extra.survive = true
 		end
 		if context.cardarea == G.play and context.main_scoring then
 			return {
@@ -1836,6 +1839,8 @@ local abstract = {
 					return true 
 				end 
 			}))
+		elseif context.final_scoring_step then
+			card.ability.extra.survive = false
 		end
 	end,
 }
