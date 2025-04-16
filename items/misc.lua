@@ -1775,15 +1775,16 @@ local abstract = {
 	},
 	key = "abstract",
 	not_stoned = true,
-	overrides_base_rank = true, --do not generate in grim, incantation, etc...
+	overrides_base_rank = true, --enhancement do not generate in grim, incantation, etc...
 	weight = 0, -- let me know if abstract cards can generate naturally
 	replace_base_card = true, --So no base chips and no image
 	atlas = "cry_misc",
 	pos = { x = 3, y = 0 },
 	not_fucked = true,
-	--NEW! specific_suit and specific_rank forces a suit or rank. Like abstracted!
+	force_no_face = true, --true = always face, false = always face
+	--NEW! specific_suit suit. Like abstracted!
 	specific_suit = 'cry_abstract',
-	specific_rank = 'cry_abstract', 
+	specific_rank = 'cry_abstract',
 	config = { extra = {Emult = 1.15, odds_after_play = 2, odds_after_round = 4,marked = false} },
 	--#1# emult, #2# in #3# chance card is destroyed after play, #4# in #5$ chance card is destroyed at end of round (even discarded or in deck)
 	loc_vars = function(self, info_queue, card)

@@ -702,34 +702,3 @@ SMODS.Atlas({
 	px = 73,
 	py = 95,
 })
-
---Abstract rank and suit
-SMODS.Suit({
-	key = 'cry_abstract',
-    card_key = 'ABSTRACT', --A..A
-	hidden = true,
-
-    pos = { x = 0, y = 0 },
-    ui_pos = { x = 0, y = 0 },
-	--no pos as abstract will override
-	--no UI pos for the same reason as above
-	in_pool = function(self, args)
-        return false
-    end
-})
-SMODS.Rank({
-	key = 'cry_abstract',
-	card_key = 'ABSTRACT', --A..A
-	hidden = true,
-	--no pos as abstract will override
-	--no UI pos for the same reason as above
-	--no strength effect in case you decide to remove abstract from a card (CLASS, Vacuum)
-	face = false,
-
-    pos = { x = 0, y = 0 },
-    ui_pos = { x = 0, y = 0 },
-	nominal = 0,
-	in_pool = function(self, args)
-        return false
-    end
-})

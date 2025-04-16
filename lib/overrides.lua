@@ -1393,7 +1393,8 @@ local getIDenhance = Card.get_id
 function Card:get_id()
     --Force suit to be suit X if specified in enhancement, only if not vampired
     if Cryptid.cry_enhancement_has_specific_rank(self) and not self.vampired then
-        return Cryptid.cry_rankname_to_id(Cryptid.cry_enhancement_get_specific_rank(self))
+		--Get the max value + 1, to always be the last at the list
+        return SMODS.Rank.max_id.value + 1
     end
     local vars = getIDenhance(self)
 	return vars
@@ -1450,3 +1451,4 @@ function Card:shatter(volume)
         delay =  0.51*dissolve_time,
     }))
 end
+

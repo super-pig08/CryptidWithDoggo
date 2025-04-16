@@ -125,3 +125,72 @@ payload = '''
     end
 '''
 match_indent = true
+
+## Artificially add abstracted 'suits' to flush calculations without declaring them (sigil, familiar)
+## Also make sure to create a hard copy of suits and iterate, otherwise adding the artificial suit will add it to suit.obj_buffer for real!
+[[patches]]
+[patches.pattern]
+target = "functions/misc_functions.lua"
+pattern = "local suits = SMODS.Suit.obj_buffer"
+position = "at"
+payload = '''
+    local suits = {}
+    suits[#suits + 1] = 'cry_abstract'
+    
+    for i,v in pairs(SMODS.Suit.obj_buffer) do
+        suits[#suits + 1] = v
+    end
+'''
+match_indent = true
+
+## Artificially add abstracted 'rank' to X of a kind calculations
+[[patches]]
+[patches.pattern]
+target = "functions/misc_functions.lua"
+pattern = '''for i = 1, SMODS.Rank.max_id.value do
+      vals[i] = {}
+  end'''
+position = "after"
+payload = '''
+    vals[#vals + 1] = {}
+'''
+match_indent = true
+
+[[patches]]
+[patches.pattern]
+target = "functions/misc_functions.lua"
+pattern = '''vals[curr[1]:get_id()] = curr'''
+position = "after"
+payload = '''
+    if curr[1]:get_id() == (SMODS.Rank.max_id.value + 1) then
+        print(curr[1]:get_id() .. "    " .. SMODS.Rank.max_id.value + 1)
+    end
+'''
+match_indent = true
+
+## Force abstract cards to be only slightly above stone cards 
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''elseif self.config.center.no_rank then'''
+position = "before"
+payload = '''
+elseif Cryptid.cry_enhancement_get_specific_rank(self) == 'cry_abstract' then
+    mult = -9000
+'''
+match_indent = true
+
+## Force abstracted to not be face cards
+
+[[patches]]
+[patches.pattern]
+target = "card.lua"
+pattern = '''if not id then return end'''
+position = "before"
+payload = '''
+if SMODS.has_enhancement(self, "m_cry_abstract") then
+    return
+end
+'''
+match_indent = true
