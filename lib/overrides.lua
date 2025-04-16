@@ -1,5 +1,44 @@
 -- overrides.lua - Adds hooks and overrides used by multiple features.
 
+--Get Pack hooks
+
+-- dumb hook because i don't feel like aggressively patching get_pack to do stuff
+-- very inefficient
+-- maybe smods should overwrite the function and make it more targetable?
+local getpackref = get_pack
+function get_pack(_key, _type)
+	local temp_banned = copy_table(G.GAME.banned_keys)
+	--Add banished keys (via DELETE) to banned_keys so they don't appear in shop
+	for k, v in pairs(G.GAME.cry_banished_keys) do
+		G.GAME.banned_keys[k] = v
+	end
+	local abc = getpackref(_key, _type)
+	--Convert banned keys back to what it was originally
+	G.GAME.banned_keys = copy_table(temp_banned)
+	if G.GAME.modifiers.cry_equilibrium then
+		if not P_CRY_ITEMS then
+			P_CRY_ITEMS = {}
+			local valid_pools = { "Joker", "Consumeables", "Voucher", "Booster" }
+			for _, id in ipairs(valid_pools) do
+				for k, v in pairs(G.P_CENTER_POOLS[id]) do
+					if not Cryptid.no(v, "doe", k) then
+						P_CRY_ITEMS[#P_CRY_ITEMS + 1] = v.key
+					end
+				end
+			end
+			for k, v in pairs(G.P_CARDS) do
+				if not Cryptid.no(v, "doe", k) then
+					P_CRY_ITEMS[#P_CRY_ITEMS + 1] = v.key
+				end
+			end
+		end
+		return G.P_CENTERS[pseudorandom_element(
+			P_CRY_ITEMS,
+			pseudoseed("cry_equipackbrium" .. G.GAME.round_resets.ante)
+		)]
+	end
+	return abc
+end
 -- get_currrent_pool hook for Deck of Equilibrium and Copies
 local gcp = get_current_pool
 function get_current_pool(_type, _rarity, _legendary, _append, override_equilibrium_effect)
