@@ -176,8 +176,9 @@ target = "card.lua"
 pattern = '''elseif self.config.center.no_rank then'''
 position = "before"
 payload = '''
-elseif Cryptid.cry_enhancement_get_specific_rank(self) == 'cry_abstract' then
+if Cryptid.cry_enhancement_get_specific_rank(self) == 'cry_abstract' then
     mult = -9000
+end
 '''
 match_indent = true
 
