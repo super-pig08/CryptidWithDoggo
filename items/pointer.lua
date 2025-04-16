@@ -661,24 +661,24 @@ local pointer = {
 local aliases = {
 	-- Vanilla Jokers
 	j_joker = {
-		"Default Joker"
+		"Default Joker",
 	},
 	j_greedy_joker = {
 		"Greedy",
-		"Greed"
+		"Greed",
 	},
 	j_lusty_joker = {
 		"Lusty",
-		"Lust"
+		"Lust",
 	},
 	j_wrathful_joker = {
 		"Wrathful",
-		"Wrath"
+		"Wrath",
 	},
 	j_gluttenous_joker = {
 		"Gluttenous",
-		"Gluttony"
-	}
+		"Gluttony",
+	},
 
 	--[[ 
 	Format:
