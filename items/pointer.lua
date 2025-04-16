@@ -692,6 +692,24 @@ local aliases = {
 	-- TARGET: Add Jokers to Alias List
 }
 
+-- How to use the functions to add cards to the list (all case insensitive)
+--
+-- Cryptid.pointeratlasify(cardkey, alias, remove)
+-- Adds a specified alias to the pointer alias list
+-- cardkey = the card's key; "j_joker", "j_cry_dropshot" (string)
+-- alias = the alias you want to refer to the card; "Dropshot", "Default Joker" (string)
+-- remove = a check for if you wish to remove the specified alias; true or nil (accepts anything lua treats as true)
+--
+-- Cryptid.pointerblistify(cardkey, remove)
+-- Blacklists a certain card key from being used in pointer (ignored if debug pointer)
+-- cardkey = see above
+-- remove = see above
+--
+-- Cryptid.pointerblistifytype
+-- WIP
+-- intended functionality: allow you to blacklist any card with a certain property
+-- examples: immutable, or rarity = "cry-exotic"
+
 local pointeritems = {
 	pointer,
 }
