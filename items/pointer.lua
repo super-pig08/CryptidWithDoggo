@@ -671,12 +671,25 @@ local pointeritems = {
 
 return {
 	name = "Pointer://",
-	items = pointeritems,
+    items = pointeritems,
 	init = function()
 		print("[CRYPTID] Inserting Pointer Aliases")
+		local alify = Cryptid.pointeraliasify
 		-- Vanilla Jokers
-		Cryptid.pointeraliasify("j_joker", "Joker", nil)
-		Cryptid.pointeraliasify("j_joker", "theboi", nil)
-		print(#Cryptid.pointeralias)
+		alify("j_joker", "Default Joker", nil)
+
+		alify("j_greedy_joker", "Greedy", nil)
+		alify("j_greedy_joker", "Greed", nil)
+
+		alify("j_lusty_joker", "Lusty", nil)
+		alify("j_lusty_joker", "Lust", nil)
+
+		alify("j_wrathful_joker", "Wrathful", nil)
+		alify("j_wrathful_joker", "Wrath", nil)
+
+		alify("j_gluttenous_joker", "Gluttenous", nil)
+		alify("j_gluttenous_joker", "Gluttony", nil)
+
+		-- TODO: the rest of them lol
 	end,
 }
