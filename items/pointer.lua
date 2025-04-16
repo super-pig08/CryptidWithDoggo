@@ -661,454 +661,454 @@ local pointer = {
 local aliases = {
 	-- Vanilla Jokers
 	j_joker = {
-		"Joker"
+		"Joker",
 	},
 	j_greedy_joker = {
-		"Greedy Joker"
+		"Greedy Joker",
 	},
 	j_lusty_joker = {
-		"Lusty Joker"
+		"Lusty Joker",
 	},
 	j_wrathful_joker = {
-		"Wrathful Joker"
+		"Wrathful Joker",
 	},
 	j_gluttenous_joker = {
-		"Gluttonous Joker"
+		"Gluttonous Joker",
 	},
 	j_jolly = {
-		"Jolly Joker"
+		"Jolly Joker",
 	},
 	j_zany = {
-		"Zany Joker"
+		"Zany Joker",
 	},
 	j_mad = {
-		"Mad Joker"
+		"Mad Joker",
 	},
 	j_crazy = {
-		"Crazy Joker"
+		"Crazy Joker",
 	},
 	j_droll = {
-		"Droll Joker"
+		"Droll Joker",
 	},
 	j_sly = {
-		"Sly Joker"
+		"Sly Joker",
 	},
 	j_wily = {
-		"Wily Joker"
+		"Wily Joker",
 	},
 	j_clever = {
-		"Clever Joker"
+		"Clever Joker",
 	},
 	j_devious = {
-		"Devious Joker"
+		"Devious Joker",
 	},
 	j_crafty = {
-		"Crafty Joker"
+		"Crafty Joker",
 	},
 	j_half = {
-		"Half Joker"
+		"Half Joker",
 	},
 	j_stencil = {
-		"Joker Stencil"
+		"Joker Stencil",
 	},
 	j_four_fingers = {
-		"Four Fingers"
+		"Four Fingers",
 	},
 	j_mime = {
-		"Mime"
+		"Mime",
 	},
 	j_credit_card = {
-		"Credit Card"
+		"Credit Card",
 	},
 	j_ceremonial = {
-		"Ceremonial Dagger"
+		"Ceremonial Dagger",
 	},
 	j_banner = {
-		"Banner"
+		"Banner",
 	},
 	j_mystic_summit = {
-		"Mystic Summit"
+		"Mystic Summit",
 	},
 	j_marble = {
-		"Marble Joker"
+		"Marble Joker",
 	},
 	j_loyalty_card = {
-		"Loyalty Card"
+		"Loyalty Card",
 	},
 	j_8_ball = {
-		"8 Ball"
+		"8 Ball",
 	},
 	j_misprint = {
-		"Misprint"
+		"Misprint",
 	},
 	j_dusk = {
-		"Dusk"
+		"Dusk",
 	},
 	j_raised_fist = {
-		"Raised Fist"
+		"Raised Fist",
 	},
 	j_chaos = {
-		"Chaos the Clown"
+		"Chaos the Clown",
 	},
 	j_fibonacci = {
-		"Fibonacci"
+		"Fibonacci",
 	},
 	j_steel_joker = {
-		"Steel Joker"
+		"Steel Joker",
 	},
 	j_scary_face = {
-		"Scary Face"
+		"Scary Face",
 	},
 	j_abstract = {
-		"Abstract Joker"
+		"Abstract Joker",
 	},
 	j_delayed_grat = {
-		"Delayed Gratification"
+		"Delayed Gratification",
 	},
 	j_hack = {
-		"Hack"
+		"Hack",
 	},
 	j_pareidolia = {
-		"Pareidolia"
+		"Pareidolia",
 	},
 	j_gros_michel = {
-		"Gros Michel"
+		"Gros Michel",
 	},
 	j_even_steven = {
-		"Even Steven"
+		"Even Steven",
 	},
 	j_odd_todd = {
-		"Odd Todd"
+		"Odd Todd",
 	},
 	j_scholar = {
-		"Scholar"
+		"Scholar",
 	},
 	j_business = {
-		"Business Card"
+		"Business Card",
 	},
 	j_supernova = {
-		"Supernova"
+		"Supernova",
 	},
 	j_ride_the_bus = {
-		"Ride the Bus"
+		"Ride the Bus",
 	},
 	j_space = {
-		"Space Joker"
+		"Space Joker",
 	},
 	j_egg = {
-		"Egg"
+		"Egg",
 	},
 	j_burglar = {
-		"Burglar"
+		"Burglar",
 	},
 	j_blackboard = {
-		"Blackboard"
+		"Blackboard",
 	},
 	j_runner = {
-		"Runner"
+		"Runner",
 	},
 	j_ice_cream = {
-		"Ice Cream"
+		"Ice Cream",
 	},
 	j_dna = {
-		"DNA"
+		"DNA",
 	},
 	j_splash = {
-		"Splash"
+		"Splash",
 	},
 	j_blue_joker = {
-		"Blue Joker"
+		"Blue Joker",
 	},
 	j_sixth_sense = {
-		"Sixth Sense"
+		"Sixth Sense",
 	},
 	j_constellation = {
-		"Constellation"
+		"Constellation",
 	},
 	j_hiker = {
-		"Hiker"
+		"Hiker",
 	},
 	j_faceless = {
-		"Faceless Joker"
+		"Faceless Joker",
 	},
 	j_green_joker = {
-		"Green Joker"
+		"Green Joker",
 	},
 	j_superposition = {
-		"Superposition"
+		"Superposition",
 	},
 	j_todo_list = {
-		"To Do List"
+		"To Do List",
 	},
 	j_cavendish = {
-		"Cavendish"
+		"Cavendish",
 	},
 	j_card_sharp = {
-		"Card Sharp"
+		"Card Sharp",
 	},
 	j_red_card = {
-		"Red Card"
+		"Red Card",
 	},
 	j_madness = {
-		"Madness"
+		"Madness",
 	},
 	j_square = {
-		"Square Joker"
+		"Square Joker",
 	},
 	j_seance = {
-		"Seance"
+		"Seance",
 	},
 	j_riff_raff = {
-		"Riff-raff"
+		"Riff-raff",
 	},
 	j_vampire = {
-		"Vampire"
+		"Vampire",
 	},
 	j_shortcut = {
-		"Shortcut"
+		"Shortcut",
 	},
 	j_hologram = {
-		"Hologram"
+		"Hologram",
 	},
 	j_vagabond = {
-		"Vagabond"
+		"Vagabond",
 	},
 	j_baron = {
-		"Baron"
+		"Baron",
 	},
 	j_cloud_9 = {
-		"Cloud 9"
+		"Cloud 9",
 	},
 	j_rocket = {
-		"Rocket"
+		"Rocket",
 	},
 	j_obelisk = {
-		"Obelisk"
+		"Obelisk",
 	},
 	j_midas_mask = {
-		"Midas Mask"
+		"Midas Mask",
 	},
 	j_luchador = {
-		"Luchador"
+		"Luchador",
 	},
 	j_photograph = {
-		"Photograph"
+		"Photograph",
 	},
 	j_gift = {
-		"Gift Card"
+		"Gift Card",
 	},
 	j_turtle_bean = {
-		"Turtle Bean"
+		"Turtle Bean",
 	},
 	j_erosion = {
-		"Erosion"
+		"Erosion",
 	},
 	j_reserved_parking = {
-		"Reserved Parking"
+		"Reserved Parking",
 	},
 	j_mail = {
-		"Mail-In Rebate"
+		"Mail-In Rebate",
 	},
 	j_to_the_moon = {
-		"To the Moon"
+		"To the Moon",
 	},
 	j_hallucination = {
-		"Hallucination"
+		"Hallucination",
 	},
 	j_fortune_teller = {
-		"Fortune Teller"
+		"Fortune Teller",
 	},
 	j_juggler = {
-		"Juggler"
+		"Juggler",
 	},
 	j_drunkard = {
-		"Drunkard"
+		"Drunkard",
 	},
 	j_stone = {
-		"Stone Joker"
+		"Stone Joker",
 	},
 	j_golden = {
-		"Golden Joker"
+		"Golden Joker",
 	},
 	j_lucky_cat = {
-		"Lucky Cat"
+		"Lucky Cat",
 	},
 	j_baseball = {
-		"Baseball Card"
+		"Baseball Card",
 	},
 	j_bull = {
-		"Bull"
+		"Bull",
 	},
 	j_diet_cola = {
-		"Diet Cola"
+		"Diet Cola",
 	},
 	j_trading = {
-		"Trading Card"
+		"Trading Card",
 	},
 	j_flash = {
-		"Flash Card"
+		"Flash Card",
 	},
 	j_popcorn = {
-		"Popcorn"
+		"Popcorn",
 	},
 	j_trousers = {
-		"Spare Trousers"
+		"Spare Trousers",
 	},
 	j_ancient = {
-		"Ancient Joker"
+		"Ancient Joker",
 	},
 	j_ramen = {
-		"Ramen"
+		"Ramen",
 	},
 	j_walkie_talkie = {
-		"Walkie Talkie"
+		"Walkie Talkie",
 	},
 	j_selzer = {
-		"Seltzer"
+		"Seltzer",
 	},
 	j_castle = {
-		"Castle"
+		"Castle",
 	},
 	j_smiley = {
-		"Smiley Face"
+		"Smiley Face",
 	},
 	j_campfire = {
-		"Campfire"
+		"Campfire",
 	},
 	j_ticket = {
-		"Golden Ticket"
+		"Golden Ticket",
 	},
 	j_mr_bones = {
-		"Mr. Bones"
+		"Mr. Bones",
 	},
 	j_acrobat = {
-		"Acrobat"
+		"Acrobat",
 	},
 	j_sock_and_buskin = {
-		"Sock and Buskin"
+		"Sock and Buskin",
 	},
 	j_swashbuckler = {
-		"Swashbuckler"
+		"Swashbuckler",
 	},
 	j_troubadour = {
-		"Troubadour"
+		"Troubadour",
 	},
 	j_certificate = {
-		"Certificate"
+		"Certificate",
 	},
 	j_smeared = {
-		"Smeared Joker"
+		"Smeared Joker",
 	},
 	j_throwback = {
-		"Throwback"
+		"Throwback",
 	},
 	j_hanging_chad = {
-		"Hanging Chad"
+		"Hanging Chad",
 	},
 	j_rough_gem = {
-		"Rough Gem"
+		"Rough Gem",
 	},
 	j_bloodstone = {
-		"Bloodstone"
+		"Bloodstone",
 	},
 	j_arrowhead = {
-		"Arrowhead"
+		"Arrowhead",
 	},
 	j_onyx_agate = {
-		"Onyx Agate"
+		"Onyx Agate",
 	},
 	j_glass = {
-		"Glass Joker"
+		"Glass Joker",
 	},
 	j_ring_master = {
-		"Showman"
+		"Showman",
 	},
 	j_flower_pot = {
-		"Flower Pot"
+		"Flower Pot",
 	},
 	j_blueprint = {
-		"Blueprint"
+		"Blueprint",
 	},
 	j_wee = {
-		"Wee Joker"
+		"Wee Joker",
 	},
 	j_merry_andy = {
-		"Merry Andy"
+		"Merry Andy",
 	},
 	j_oops = {
-		"Oops! All 6s"
+		"Oops! All 6s",
 	},
 	j_idol = {
-		"The Idol"
+		"The Idol",
 	},
 	j_seeing_double = {
-		"Seeing Double"
+		"Seeing Double",
 	},
 	j_matador = {
-		"Matador"
+		"Matador",
 	},
 	j_hit_the_road = {
-		"Hit the Road"
+		"Hit the Road",
 	},
 	j_duo = {
-		"The Duo"
+		"The Duo",
 	},
 	j_trio = {
-		"The Trio"
+		"The Trio",
 	},
 	j_family = {
-		"The Family"
+		"The Family",
 	},
 	j_order = {
-		"The Order"
+		"The Order",
 	},
 	j_tribe = {
-		"The Tribe"
+		"The Tribe",
 	},
 	j_stuntman = {
-		"Stuntman"
+		"Stuntman",
 	},
 	j_invisible = {
-		"Invisible Joker"
+		"Invisible Joker",
 	},
 	j_brainstorm = {
-		"Brainstorm"
+		"Brainstorm",
 	},
 	j_satellite = {
-		"Satellite"
+		"Satellite",
 	},
 	j_shoot_the_moon = {
-		"Shoot the Moon"
+		"Shoot the Moon",
 	},
 	j_drivers_license = {
-		"Driver's License"
+		"Driver's License",
 	},
 	j_cartomancer = {
-		"Cartomancer"
+		"Cartomancer",
 	},
 	j_astronomer = {
-		"Astronomer"
+		"Astronomer",
 	},
 	j_burnt = {
-		"Burnt Joker"
+		"Burnt Joker",
 	},
 	j_bootstraps = {
-		"Bootstraps"
+		"Bootstraps",
 	},
 	j_caino = {
-		"Caino"
+		"Caino",
 	},
 	j_triboulet = {
-		"Triboulet"
+		"Triboulet",
 	},
 	j_yorick = {
-		"Yorick"
+		"Yorick",
 	},
 	j_chicot = {
-		"Chicot"
+		"Chicot",
 	},
 	j_perkeo = {
-		"Perkeo"
+		"Perkeo",
 	},
 
 	--[[ 
