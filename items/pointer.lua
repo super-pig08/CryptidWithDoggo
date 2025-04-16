@@ -665,6 +665,40 @@ local pointer = {
 -- specific joker blacklist
 -- joker type blacklist (see: exotics)
 
+local aliases = {
+	-- Vanilla Jokers
+	j_joker = {
+		"Default Joker"
+	},
+	j_greedy_joker = {
+		"Greedy",
+		"Greed"
+	},
+	j_lusty_joker = {
+		"Lusty",
+		"Lust"
+	},
+	j_wrathful_joker = {
+		"Wrathful",
+		"Wrath"
+	},
+	j_gluttenous_joker = {
+		"Gluttenous",
+		"Gluttony"
+	}
+
+	--[[ 
+	Format:
+		<joker key> = {
+			"<alias1>",
+			"<alias2>",
+			...
+			"<aliasN>",
+		},
+	]]
+	-- TARGET: Add Jokers to Alias List
+}
+
 local pointeritems = {
 	pointer,
 }
@@ -675,21 +709,11 @@ return {
 	init = function()
 		print("[CRYPTID] Inserting Pointer Aliases")
 		local alify = Cryptid.pointeraliasify
-		-- Vanilla Jokers
-		alify("j_joker", "Default Joker", nil)
 
-		alify("j_greedy_joker", "Greedy", nil)
-		alify("j_greedy_joker", "Greed", nil)
-
-		alify("j_lusty_joker", "Lusty", nil)
-		alify("j_lusty_joker", "Lust", nil)
-
-		alify("j_wrathful_joker", "Wrathful", nil)
-		alify("j_wrathful_joker", "Wrath", nil)
-
-		alify("j_gluttenous_joker", "Gluttenous", nil)
-		alify("j_gluttenous_joker", "Gluttony", nil)
-
-		-- TODO: the rest of them lol
+		for key, aliasesTable in pairs(aliases) do
+			for _, alias in pairs(aliasesTable) do
+				alify(key, alias, nil)
+			end
+		end
 	end,
 }
