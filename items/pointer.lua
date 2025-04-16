@@ -671,7 +671,7 @@ local pointeritems = {
 
 return {
 	name = "Pointer://",
-    items = pointeritems,
+	items = pointeritems,
 	init = function()
 		print("[CRYPTID] Inserting Pointer Aliases")
 		local alify = Cryptid.pointeraliasify
