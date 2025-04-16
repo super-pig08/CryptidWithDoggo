@@ -160,20 +160,19 @@ local pointer = {
 			end
 			local current_card -- j_cry_dropshot
 			local entered_card = G.ENTERED_CARD
-			local key_check = nil
 			G.PREVIOUS_ENTERED_CARD = G.ENTERED_CARD
 			current_card = Cryptid.pointergetalias(apply_lower(entered_card)) or nil
 			for key, card in pairs(G.P_CENTERS) do
 				if apply_lower(card.name) == apply_lower(entered_card) then
 					current_card = key
-					key_check = true
-					print(current_card)
 				end
 				if apply_lower(tostring(key)) == apply_lower(entered_card) then
 					current_card = key
-					key_check = true
-					print(current_card)
 				end
+			end
+
+			if Cryptid.pointergetblist(current_card) then
+				current_card = nil
 			end
 			print(current_card)
 
@@ -185,10 +184,8 @@ local pointer = {
 						G.DEBUG_POINTER -- Debug Mode
 						or (
 							G.P_CENTERS[current_card].unlocked -- If card discovered
-								and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit -- and you have room
-								and Cryptid.pointergetalias(current_card)
-							or key_check -- and key exists
-								and not Cryptid.pointergetblist(current_card) -- and card isn't pointer banned
+							and #G.jokers.cards + G.GAME.joker_buffer < G.jokers.config.card_limit -- and you have room
+							and Cryptid.pointergetalias(current_card) -- and key exists
 						)
 					)
 				then
@@ -203,8 +200,7 @@ local pointer = {
 						G.DEBUG_POINTER
 						or (
 							#G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit
-								and Cryptid.pointergetalias(current_card)
-							or key_check and not Cryptid.pointergetblist(current_card)
+							and Cryptid.pointergetalias(current_card)
 						)
 					)
 				then
@@ -216,14 +212,11 @@ local pointer = {
 					G.consumeables:emplace(card)
 					created = true
 				end
-				if
+				if -- Voucher check
 					G.P_CENTERS[current_card].set == "Voucher"
 					and (
 						G.DEBUG_POINTER
-						or (
-							G.P_CENTERS[current_card].unlocked and Cryptid.pointergetalias(current_card)
-							or key_check and not Cryptid.pointergetblist(current_card)
-						)
+						or (G.P_CENTERS[current_card].unlocked and Cryptid.pointergetalias(current_card))
 					)
 				then
 					local area
@@ -259,11 +252,11 @@ local pointer = {
 					}))
 					created = true
 				end
-				if
+				if -- Booster check
 					G.P_CENTERS[current_card].set == "Booster"
 					and (G.DEBUG_POINTER or (G.P_CENTERS[current_card].unlocked and Cryptid.pointergetalias(
 						current_card
-					) or key_check and not Cryptid.pointergetblist(current_card)))
+					)))
 					and ( -- no boosters if already in booster
 						G.STATE ~= G.STATES.TAROT_PACK
 						and G.STATE ~= G.STATES.SPECTRAL_PACK
@@ -662,7 +655,7 @@ local pointer = {
 -- TODO
 -- accept raw keys (COMPLETE)
 -- accept custom aliases (COMPLETE)
--- specific joker blacklist
+-- specific joker blacklist (COMPLETE)
 -- joker type blacklist (see: exotics)
 
 local aliases = {

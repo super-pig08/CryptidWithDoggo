@@ -10,6 +10,12 @@ function Cryptid.pointerblistify(target, remove) -- Add specific joker to blackl
 	if not remove then
 		Cryptid.pointerblist[#Cryptid.pointerblist + 1] = target
 		return true
+	else
+		for i = 1, #Cryptid.pointerblist do
+			if Cryptid.pointerblist[i] == target then
+				table.remove(Cryptid.pointerblisttype, i)
+			end
+		end
 	end
 end
 
@@ -96,12 +102,9 @@ function Cryptid.pointergetblist(target) -- "Is this card pointer banned?"
 	end
 	return false
 end
+
 local aliases = {
 	-- Vanilla Jokers
-	greedy = "greedy joker",
-	lusty = "lusty joker",
-	wrathful = "wrathful joker",
-	gluttonous = "gluttonous joker",
 	jolly = "jolly joker",
 	zany = "zany joker",
 	mad = "mad joker",
@@ -338,6 +341,3 @@ local aliases = {
 	windmill = "the windmill",
 	clock = "the clock",
 }
--- for k, v in pairs(aliases) do
---     Cryptid.pointeraliasify(k, v)
--- end
