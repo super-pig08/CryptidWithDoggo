@@ -505,7 +505,7 @@ local notebook = {
 				end
 			end
 			if
-				jollycount >= card.ability.extra.jollies --if there are 5 or more jolly jokers
+				to_number(jollycount) >= to_number(card.ability.extra.jollies) --if there are 5 or more jolly jokers
 				or pseudorandom("cry_notebook")
 					< cry_prob(card.ability.cry_prob, card.ability.extra.odds, card.ability.cry_rigged) / card.ability.extra.odds
 			then
