@@ -4023,7 +4023,9 @@ local alttab = { -- ://Alt-Tab, creates the current blind's Tag
 					play_sound("tarot1")
 					local tag = nil
 					local type = G.GAME.blind:get_type()
-					if type == "Boss" then
+					if next(SMODS.find_card("j_cry_kittyprinter")) then
+						tag = Tag("tag_cry_cat")
+					elseif type == "Boss" then
 						tag = Tag(get_next_tag_key())
 					else
 						tag = Tag(G.GAME.round_resets.blind_tags[type])
