@@ -1917,6 +1917,127 @@ local seraph = {
 		return { vars = { card and card.ability.max_highlighted or self.config.max_highlighted } }
 	end,
 }
+local abstract = {
+	cry_credits = {
+		idea = {
+			"lolxddj",
+		},
+		art = {
+			"lolxddj",
+		},
+		code = {
+			"70UNIK",
+		},
+	},
+	object_type = "Enhancement",
+	dependencies = {
+		items = {
+			"set_cry_misc",
+		},
+	},
+	key = "abstract",
+	not_stoned = true,
+	overrides_base_rank = true, --enhancement do not generate in grim, incantation, etc...
+	weight = 0, -- let me know if abstract cards can generate naturally
+	replace_base_card = true, --So no base chips and no image
+	atlas = "cry_misc",
+	pos = { x = 3, y = 0 },
+	not_fucked = true,
+	force_no_face = true, --true = always face, false = always face
+	--NEW! specific_suit suit. Like abstracted!
+	specific_suit = 'cry_abstract',
+	specific_rank = 'cry_abstract',
+	config = { extra = {Emult = 1.15, odds_after_play = 2, odds_after_round = 4,marked = false,survive = false} },
+	--#1# emult, #2# in #3# chance card is destroyed after play, #4# in #5$ chance card is destroyed at end of round (even discarded or in deck)
+	loc_vars = function(self, info_queue, card)
+		return {
+			vars = { card.ability.extra.Emult, 
+			cry_prob(card.ability.cry_prob, card.ability.extra.odds_after_play, card.ability.cry_rigged),
+			card.ability.extra.odds_after_play,
+			cry_prob(card.ability.cry_prob, card.ability.extra.odds_after_round, card.ability.cry_rigged),
+			card.ability.extra.odds_after_round,
+		},
+	}
+	end,
+	calculate = function(self, card, context)
+		--Druing scoring
+		if
+		context.cardarea == G.play
+		and context.main_scoring
+		and not card.ability.extra.marked 
+		and not card.ability.eternal and 
+		not card.ability.extra.survive and --this presvents repitition of shatter chance by shutting it out once it confirms to "survive"
+		pseudorandom('cry_abstract_destroy') 
+		< cry_prob(card.ability.cry_prob, card.ability.extra.odds_after_play, card.ability.cry_rigged) / card.ability.extra.odds_after_play
+		then -- the 'card.area' part makes sure the card has a chance to survive if in the play area
+			card.ability.extra.marked = true
+		elseif context.cardarea == G.play
+		and context.main_scoring and not card.ability.extra.marked then
+			card.ability.extra.survive = true
+		end
+		if context.cardarea == G.play and context.main_scoring then
+			return {
+				message = localize({
+					type = "variable",
+					key = "a_powmult",
+					vars = {
+						number_format(card.ability.extra.Emult),
+					},
+				}),
+				Emult_mod = card.ability.extra.Emult,
+				colour = G.C.DARK_EDITION,
+			}
+		end
+
+		if context.final_scoring_step and card.ability.extra.marked 
+		and not context.repetition and not card.ability.eternal 
+		and not (card.will_shatter or card.destroyed or card.shattered) then
+			--print("destroy1")
+			G.E_MANAGER:add_event(Event({
+				trigger = 'immediate',
+				func = function()
+                    card:juice_up(0.9, 0.9)
+					card:shatter()
+					return true 
+				end 
+			}))
+		elseif context.final_scoring_step then
+			card.ability.extra.survive = false
+		end
+	end,
+}
+local instability = {
+	cry_credits = {
+		idea = {
+			"lolxddj",
+		},
+		art = {
+			"lolxddj",
+		},
+		code = {
+			"70UNIK",
+		},
+	},
+	object_type = "Consumable",
+	dependencies = {
+		items = {
+			"set_cry_misc",
+			"m_cry_abstract",
+		},
+	},
+	set = "Tarot",
+	name = "cry-Instability",
+	key = "instability",
+	order = 3,
+	pos = { x = 5, y = 5 },
+	config = { mod_conv = "m_cry_abstract", max_highlighted = 1 },
+	atlas = "atlasnotjokers",
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = G.P_CENTERS.m_cry_abstract
+
+		return { vars = { card and card.ability.max_highlighted or self.config.max_highlighted } }
+	end,
+}
 local blessing = {
 	cry_credits = {
 		idea = {
@@ -2180,6 +2301,8 @@ local miscitems = {
 	azure_seal,
 	--double_sided,
 	--meld,
+	abstract,
+	instability,
 	absolute,
 	light,
 	seraph,
@@ -2199,6 +2322,30 @@ return {
 			elseif self.ignore_shadow["cry_noshadow"] then
 				self.ignore_shadow["cry_noshadow"] = nil
 			end
+		end
+		function Card:calculate_abstract_break()
+			if self.config.center_key == "m_cry_abstract" and not self.ability.extra.marked then
+				if pseudorandom("cry_abstract_destroy2") 
+				< cry_prob(self.ability.cry_prob, self.ability.extra.odds_after_round, self.ability.cry_rigged) / self.ability.extra.odds_after_round
+				then
+					self.ability.extra.marked = true
+					--KUFMO HAS abstract!!!!111!!!
+					G.E_MANAGER:add_event(Event({
+						trigger = 'immediate',
+						delay = '0.1',
+						func = function()
+							self:juice_up(2, 2)
+							self:shatter(0.2)
+							return true 
+						end 
+					}))
+					return true
+				else
+					return false
+				end
+				
+			end
+			return false
 		end
 	end,
 	items = miscitems,
