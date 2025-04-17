@@ -1860,10 +1860,11 @@ local instability = {
 	dependencies = {
 		items = {
 			"set_cry_misc",
+			"m_cry_abstract",
 		},
 	},
 	set = "Tarot",
-	name = "cry-Abstract",
+	name = "cry-Instability",
 	key = "instability",
 	order = 1,
 	pos = { x = 6, y = 4 },
@@ -1891,6 +1892,7 @@ local sock_and_sock = {
 	dependencies = {
 		items = {
 			"set_cry_misc_joker",
+			"m_cry_abstract",
 		},
 	},
 	name = "cry-sock_and_sock",
