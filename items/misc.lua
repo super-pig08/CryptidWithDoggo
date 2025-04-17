@@ -2028,7 +2028,7 @@ local instability = {
 	set = "Tarot",
 	name = "cry-Instability",
 	key = "instability",
-	order = 1,
+	order = 3,
 	pos = { x = 5, y = 5 },
 	config = { mod_conv = "m_cry_abstract", max_highlighted = 1 },
 	atlas = "atlasnotjokers",
