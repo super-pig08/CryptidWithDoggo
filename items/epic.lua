@@ -1667,7 +1667,7 @@ local altgoogol = {
 	eternal_compat = false,
 	atlas = "atlasepic",
 	soul_pos = { x = 10, y = 0, extra = { x = 5, y = 3 } },
-	config = { copies = 2, },
+	config = { copies = 2 },
 	gameset_config = {
 		modest = {
 			cost = 15,
