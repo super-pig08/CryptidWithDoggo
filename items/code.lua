@@ -1780,7 +1780,7 @@ local class = {
 				m_lucky = { "lucky", "rng" },
 				m_cry_echo = { "echo", "retrigger", "retriggers" },
 				m_cry_light = { "light" },
-				m_cry_abstract = {"abstracted","abstract","tadc"},
+				m_cry_abstract = { "abstracted", "abstract", "tadc" },
 				ccd = { "ccd" },
 				null = { "nil" },
 			}

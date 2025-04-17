@@ -143,7 +143,7 @@ end
 
 --Designed to run if ran with is_suit overriding mods of higher priority (UnStable comes to first mind)
 function Card:is_suit_force_enhancement(suit, bypass_debuff, flush_calc)
---Force suit to be suit X if specified in enhancement, only if not vampired
+	--Force suit to be suit X if specified in enhancement, only if not vampired
 	if Cryptid.cry_enhancement_has_specific_suit(self) and not self.vampired then
 		return suit == Cryptid.cry_enhancement_get_specific_suit(self)
 	end

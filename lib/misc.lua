@@ -741,32 +741,40 @@ end
 --Abstracted cards
 function Cryptid.cry_enhancement_has_specific_suit(card)
 	for k, _ in pairs(SMODS.get_enhancements(card)) do
-        if G.P_CENTERS[k].specific_suit then return true end
-    end
+		if G.P_CENTERS[k].specific_suit then
+			return true
+		end
+	end
 	return false
 end
 function Cryptid.cry_enhancement_get_specific_suit(card)
 	for k, _ in pairs(SMODS.get_enhancements(card)) do
-        if G.P_CENTERS[k].specific_suit then return G.P_CENTERS[k].specific_suit end
-    end
+		if G.P_CENTERS[k].specific_suit then
+			return G.P_CENTERS[k].specific_suit
+		end
+	end
 	return nil
 end
 
 function Cryptid.cry_enhancement_has_specific_rank(card)
 	for k, _ in pairs(SMODS.get_enhancements(card)) do
-        if G.P_CENTERS[k].specific_rank then return true end
-    end
+		if G.P_CENTERS[k].specific_rank then
+			return true
+		end
+	end
 	return false
 end
 function Cryptid.cry_enhancement_get_specific_rank(card)
 	for k, _ in pairs(SMODS.get_enhancements(card)) do
-        if G.P_CENTERS[k].specific_rank then return G.P_CENTERS[k].specific_rank end
-    end
+		if G.P_CENTERS[k].specific_rank then
+			return G.P_CENTERS[k].specific_rank
+		end
+	end
 	return nil
 end
 --For better durability (at the expense of performance), this finds the rank ID of a custom rank (such as abstract).
 function Cryptid.cry_rankname_to_id(rankname)
-	for i,v in pairs(SMODS.Rank.obj_buffer) do
+	for i, v in pairs(SMODS.Rank.obj_buffer) do
 		if rankname == v then
 			return i
 		end

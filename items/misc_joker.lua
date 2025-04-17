@@ -8909,7 +8909,6 @@ local sock_and_sock = {
 			end
 		end
 	end,
-	
 }
 local miscitems = {
 	jimball_sprite,

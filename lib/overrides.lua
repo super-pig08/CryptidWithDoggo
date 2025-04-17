@@ -1358,82 +1358,101 @@ end
 
 --Abstract cards: Fix to avoid "ghost cards", as aresult of destroying discarded cards by adding a flag checcking its not destroyed
 G.FUNCS.draw_from_discard_to_deck = function(e)
-    G.E_MANAGER:add_event(Event({
-        trigger = 'immediate',
-        func = function()
+	G.E_MANAGER:add_event(Event({
+		trigger = "immediate",
+		func = function()
 			local discard_count = #G.discard.cards
-			for i=1, discard_count do --draw cards from deck
+			for i = 1, discard_count do --draw cards from deck
 				local card = G.discard.cards[i]
 				if not card.shattered and not card.destroyed then
-					draw_card(G.discard, G.deck, i*100/discard_count,'up', nil ,card, 0.005, i%2==0, nil, math.max((21-i)/20,0.7))
+					draw_card(
+						G.discard,
+						G.deck,
+						i * 100 / discard_count,
+						"up",
+						nil,
+						card,
+						0.005,
+						i % 2 == 0,
+						nil,
+						math.max((21 - i) / 20, 0.7)
+					)
 				end
 			end
 			return true
-        end
-      }))
-  end
+		end,
+	}))
+end
 
 --Add a hook to getID for abstracts (and to conditionally enable the check)
 local getIDenhance = Card.get_id
 function Card:get_id()
-    --Force suit to be suit X if specified in enhancement, only if not vampired
-    if Cryptid.cry_enhancement_has_specific_rank(self) and not self.vampired then
+	--Force suit to be suit X if specified in enhancement, only if not vampired
+	if Cryptid.cry_enhancement_has_specific_rank(self) and not self.vampired then
 		--Get the max value + 1, to always be the last at the list
-        return SMODS.Rank.max_id.value + 1
-    end
-    local vars = getIDenhance(self)
+		return SMODS.Rank.max_id.value + 1
+	end
+	local vars = getIDenhance(self)
 	return vars
 end
 
 --override shatter function to adjust volume (it has been requested that at end of deck, abstract cards should shatter a bit quieter)
 function Card:shatter(volume)
-    local dissolve_time = 0.7
-    self.shattered = true
-    self.dissolve = 0
-    self.dissolve_colours = {{1,1,1,0.8}}
-    self:juice_up()
-    local childParts = Particles(0, 0, 0,0, {
-        timer_type = 'TOTAL',
-        timer = 0.007*dissolve_time,
-        scale = 0.3,
-        speed = 4,
-        lifespan = 0.5*dissolve_time,
-        attach = self,
-        colours = self.dissolve_colours,
-        fill = true
-    })
-    G.E_MANAGER:add_event(Event({
-        trigger = 'after',
-        blockable = false,
-        delay =  0.5*dissolve_time,
-        func = (function() childParts:fade(0.15*dissolve_time) return true end)
-    }))
-    G.E_MANAGER:add_event(Event({
-        blockable = false,
-        func = (function()
-                play_sound('glass'..math.random(1, 6), math.random()*0.2 + 0.9,volume or 0.5)
-                play_sound('generic1', math.random()*0.2 + 0.9,volume or 0.5)
-            return true end)
-    }))
-    G.E_MANAGER:add_event(Event({
-        trigger = 'ease',
-        blockable = false,
-        ref_table = self,
-        ref_value = 'dissolve',
-        ease_to = 1,
-        delay =  0.5*dissolve_time,
-        func = (function(t) return t end)
-    }))
-    G.E_MANAGER:add_event(Event({
-        trigger = 'after',
-        blockable = false,
-        delay =  0.55*dissolve_time,
-        func = (function() self:remove() return true end)
-    }))
-    G.E_MANAGER:add_event(Event({
-        trigger = 'after',
-        blockable = false,
-        delay =  0.51*dissolve_time,
-    }))
+	local dissolve_time = 0.7
+	self.shattered = true
+	self.dissolve = 0
+	self.dissolve_colours = { { 1, 1, 1, 0.8 } }
+	self:juice_up()
+	local childParts = Particles(0, 0, 0, 0, {
+		timer_type = "TOTAL",
+		timer = 0.007 * dissolve_time,
+		scale = 0.3,
+		speed = 4,
+		lifespan = 0.5 * dissolve_time,
+		attach = self,
+		colours = self.dissolve_colours,
+		fill = true,
+	})
+	G.E_MANAGER:add_event(Event({
+		trigger = "after",
+		blockable = false,
+		delay = 0.5 * dissolve_time,
+		func = function()
+			childParts:fade(0.15 * dissolve_time)
+			return true
+		end,
+	}))
+	G.E_MANAGER:add_event(Event({
+		blockable = false,
+		func = function()
+			play_sound("glass" .. math.random(1, 6), math.random() * 0.2 + 0.9, volume or 0.5)
+			play_sound("generic1", math.random() * 0.2 + 0.9, volume or 0.5)
+			return true
+		end,
+	}))
+	G.E_MANAGER:add_event(Event({
+		trigger = "ease",
+		blockable = false,
+		ref_table = self,
+		ref_value = "dissolve",
+		ease_to = 1,
+		delay = 0.5 * dissolve_time,
+		func = function(t)
+			return t
+		end,
+	}))
+	G.E_MANAGER:add_event(Event({
+		trigger = "after",
+		blockable = false,
+		delay = 0.55 * dissolve_time,
+		func = function()
+			self:remove()
+			return true
+		end,
+	}))
+	G.E_MANAGER:add_event(Event({
+		trigger = "after",
+		blockable = false,
+		delay = 0.51 * dissolve_time,
+	}))
 end
-
