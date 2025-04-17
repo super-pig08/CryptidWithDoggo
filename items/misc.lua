@@ -1867,7 +1867,7 @@ local instability = {
 	name = "cry-Instability",
 	key = "instability",
 	order = 1,
-	pos = { x = 6, y = 4 },
+	pos = { x = 5, y = 5 },
 	config = { mod_conv = "m_cry_abstract", max_highlighted = 1 },
 	atlas = "atlasnotjokers",
 	loc_vars = function(self, info_queue, card)
@@ -1876,57 +1876,7 @@ local instability = {
 		return { vars = { card and card.ability.max_highlighted or self.config.max_highlighted } }
 	end,
 }
-local sock_and_sock = {
-	cry_credits = {
-		idea = {
-			"lolxddj",
-		},
-		art = {
-			"lolxddj",
-		},
-		code = {
-			"70UNIK",
-		},
-	},
-	object_type = "Joker",
-	dependencies = {
-		items = {
-			"set_cry_misc_joker",
-			"m_cry_abstract",
-		},
-	},
-	name = "cry-sock_and_sock",
-	key = "sock_and_sock",
-	pos = { x = 6, y = 6 },
-	config = {
-		extra = { retriggers = 1 },
-		immutable = { max_retriggers = 40 },
-	},
-	enhancement_gate = "m_cry_abstract",
-	rarity = 2,
-	cost = 7,
-	order = 123,
-	atlas = "atlastwo",
-	blueprint_compat = true,
-	loc_vars = function(self, info_queue, center)
-		info_queue[#info_queue + 1] = G.P_CENTERS.m_cry_abstract
-		return { vars = { math.min(center.ability.immutable.max_retriggers, center.ability.extra.retriggers) } }
-	end,
-	calculate = function(self, card, context)
-		if context.repetition and context.cardarea == G.play then
-			if SMODS.has_enhancement(context.other_card, "m_cry_abstract") then
-				return {
-					message = localize("k_again_ex"),
-					repetitions = to_number(
-						math.min(card.ability.immutable.max_retriggers, card.ability.extra.retriggers)
-					),
-					card = card,
-				}
-			end
-		end
-	end,
-	
-}
+
 -- Enhancements/Tarots
 local echo = {
 	cry_credits = {
@@ -2352,7 +2302,6 @@ local miscitems = {
 	--double_sided,
 	--meld,
 	abstract,
-	sock_and_sock,
 	instability,
 	absolute,
 	light,
