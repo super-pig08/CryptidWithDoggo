@@ -185,7 +185,10 @@ local pointer = {
 				end
 				if -- Consumeable check
 					G.P_CENTERS[current_card].consumeable
-					and (G.DEBUG_POINTER or (#G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit))
+					and (
+						G.DEBUG_POINTER
+						or (#G.consumeables.cards + G.GAME.consumeable_buffer < G.consumeables.config.card_limit)
+					)
 				then
 					local card = create_card("Consumeable", G.consumeables, nil, nil, nil, nil, current_card)
 					if card.ability.name and card.ability.name == "cry-Chambered" then
