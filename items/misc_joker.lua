@@ -9121,7 +9121,7 @@ local miscitems = {
 	huntingseason,
 	--cat_owl,
 	--eyeofhagane, (apparently this wasn't screened)
-  familiar_currency,
+	familiar_currency,
 	highfive,
 	sock_and_sock,
 }
