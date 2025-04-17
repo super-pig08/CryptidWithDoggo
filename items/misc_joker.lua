@@ -119,7 +119,7 @@ local happyhouse = {
 			vars = {
 				number_format(center.ability.extra.mult),
 				number_format(center.ability.immutable.check),
-				number_format(center.ability.trigger),
+				number_format(center.ability.extra.trigger),
 			},
 		}
 	end,
