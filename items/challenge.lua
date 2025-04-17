@@ -79,6 +79,7 @@ local ballin = {
 			{ id = "c_grim" },
 			{ id = "c_incantation" },
 			{ id = "c_cry_eclipse" },
+			{ id = "c_cry_instability" },
 			{ id = "c_cry_class" },
 		},
 		banned_other = {},
@@ -283,6 +284,7 @@ local rng = {
 			{ id = "tag_rare" },
 			{ id = "tag_top_up" },
 			{ id = "tag_cry_epic" },
+			{ id = "tag_cry_gourmand" },
 		},
 		banned_cards = {
 			{ id = "c_cry_delete" },

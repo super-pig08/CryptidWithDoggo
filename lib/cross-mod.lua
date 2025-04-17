@@ -117,6 +117,10 @@ if (SMODS.Mods["AntePreview"] or {}).can_load then
 			big = get_new_boss()
 		end
 		local predictions = predict_hook()
+		if next(SMODS.find_card("j_cry_kittyprinter")) then
+			predictions.Small.tag = "tag_cry_cat"
+			predictions.Big.tag = "tag_cry_cat"
+		end
 		if G.GAME.modifiers.cry_no_tags then
 			for _, pred in pairs(predictions) do
 				pred.tag = nil
@@ -135,4 +139,14 @@ if (SMODS.Mods["AntePreview"] or {}).can_load then
 		end
 		return predictions
 	end
+end
+
+--Designed to run if ran with is_suit overriding mods of higher priority (UnStable comes to first mind)
+function Card:is_suit_force_enhancement(suit, bypass_debuff, flush_calc)
+	--Force suit to be suit X if specified in enhancement, only if not vampired
+	if Cryptid.cry_enhancement_has_specific_suit(self) and not self.vampired then
+		return suit == Cryptid.cry_enhancement_get_specific_suit(self)
+	end
+	local ref = self:is_suit(suit, bypass_debuff, flush_calc)
+	return ref
 end

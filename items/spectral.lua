@@ -68,7 +68,7 @@ local white_hole = {
 		if modest then
 			level_up_hand(used_consumable, _hand, false, 4)
 		else
-			level_up_hand(used_consumable, _hand, false, 3 * removed_levels)
+			level_up_hand(used_consumable, _hand, false, math.min((3 * removed_levels), 1e300))
 		end
 		update_hand_text(
 			{ sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
@@ -109,7 +109,7 @@ local white_hole = {
 		if modest then
 			level_up_hand(used_consumable, _hand, false, 4 * number)
 		else
-			level_up_hand(used_consumable, _hand, false, removed_levels * 3 ^ number)
+			level_up_hand(used_consumable, _hand, false, math.min(((3 ^ number) * removed_levels), 1e300))
 		end
 		update_hand_text(
 			{ sound = "button", volume = 0.7, pitch = 1.1, delay = 0 },
@@ -152,6 +152,7 @@ local vacuum = {
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
 		local earnings = 0
+		check_for_unlock({ cry_used_consumable = "c_cry_vacuum" })
 		G.E_MANAGER:add_event(Event({
 			trigger = "after",
 			delay = 0.4,
@@ -235,6 +236,7 @@ local hammerspace = {
 	end,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
+		check_for_unlock({ cry_used_consumable = "c_cry_hammerspace" })
 		G.E_MANAGER:add_event(Event({
 			trigger = "after",
 			delay = 0.4,
@@ -309,6 +311,7 @@ local lock = {
 	end,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
+		check_for_unlock({ cry_used_consumable = "c_cry_lock" })
 		local target = #G.jokers.cards == 1 and G.jokers.cards[1] or G.jokers.cards[math.random(#G.jokers.cards)]
 		G.E_MANAGER:add_event(Event({
 			trigger = "after",
@@ -566,6 +569,7 @@ local analog = {
 		return #G.jokers.cards > 0
 	end,
 	use = function(self, card, area, copier)
+		check_for_unlock({ cry_used_consumable = "c_cry_analog" })
 		local used_consumable = copier or card
 		local deletable_jokers = {}
 		for k, v in pairs(G.jokers.cards) do
@@ -787,6 +791,7 @@ local replica = {
 	end,
 	use = function(self, card, area, copier)
 		local used_consumable = copier or card
+		check_for_unlock({ cry_used_consumable = "c_cry_replica" })
 		local chosen_card = pseudorandom_element(G.hand.cards, pseudoseed("cry_replica_choice"))
 		G.E_MANAGER:add_event(Event({
 			trigger = "after",

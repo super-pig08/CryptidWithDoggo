@@ -340,7 +340,7 @@ local oversat = {
 					end,
 				}))
 				update_hand_text({ delay = 1.3 }, { mult = G.GAME.hands[hand].mult, StatusText = true })
-			elseif hand == G.handlist[#G.handlist] then
+			elseif Aurinko.VerboseMode then
 				G.E_MANAGER:add_event(Event({
 					trigger = "after",
 					delay = 0.2,
@@ -350,7 +350,10 @@ local oversat = {
 						return true
 					end,
 				}))
-				update_hand_text({ delay = 1.3 }, { chips = (amount > 0 and "++" or "--"), StatusText = true })
+				update_hand_text(
+					{ delay = 1.3 },
+					{ chips = (to_big(amount) > to_big(0) and "++" or "--"), StatusText = true }
+				)
 				G.E_MANAGER:add_event(Event({
 					trigger = "after",
 					delay = 0.2,
@@ -360,7 +363,10 @@ local oversat = {
 						return true
 					end,
 				}))
-				update_hand_text({ delay = 1.3 }, { mult = (amount > 0 and "++" or "--"), StatusText = true })
+				update_hand_text(
+					{ delay = 1.3 },
+					{ mult = (to_big(amount) > to_big(0) and "++" or "--"), StatusText = true }
+				)
 			end
 		end
 	end,
@@ -570,7 +576,7 @@ local glitched = {
 					StatusText = true,
 				})
 				update_hand_text({ delay = 1.3 }, { mult = G.GAME.hands[hand].mult })
-			elseif hand == G.handlist[#G.handlist] then
+			elseif Aurinko.VerboseMode then
 				G.E_MANAGER:add_event(Event({
 					trigger = "after",
 					delay = 0.2,
@@ -1078,7 +1084,10 @@ local noisy = {
 						return true
 					end,
 				}))
-				update_hand_text({ delay = 1.3 }, { chips = (amount > 0 and "+" or "-") .. "???", StatusText = true })
+				update_hand_text(
+					{ delay = 1.3 },
+					{ chips = (to_big(amount) > to_big(0) and "+" or "-") .. "???", StatusText = true }
+				)
 				G.E_MANAGER:add_event(Event({
 					trigger = "after",
 					delay = 0.2,
@@ -1088,7 +1097,10 @@ local noisy = {
 						return true
 					end,
 				}))
-				update_hand_text({ delay = 1.3 }, { mult = (amount > 0 and "+" or "-") .. "???", StatusText = true })
+				update_hand_text(
+					{ delay = 1.3 },
+					{ mult = (to_big(amount) > to_big(0) and "+" or "-") .. "???", StatusText = true }
+				)
 			end
 		end
 	end,
@@ -1294,7 +1306,7 @@ local glass_edition = {
 		then
 			if
 				not card.ability.eternal
-				and (
+				and not (
 					pseudorandom(pseudoseed("cry_fragile"))
 					> ((self.config.shatter_chance - 1) / self.config.shatter_chance)
 				)
@@ -1905,6 +1917,131 @@ local seraph = {
 		return { vars = { card and card.ability.max_highlighted or self.config.max_highlighted } }
 	end,
 }
+local abstract = {
+	cry_credits = {
+		idea = {
+			"lolxddj",
+		},
+		art = {
+			"lolxddj",
+		},
+		code = {
+			"70UNIK",
+		},
+	},
+	object_type = "Enhancement",
+	dependencies = {
+		items = {
+			"set_cry_misc",
+		},
+	},
+	key = "abstract",
+	not_stoned = true,
+	overrides_base_rank = true, --enhancement do not generate in grim, incantation, etc...
+	weight = 0, -- let me know if abstract cards can generate naturally
+	replace_base_card = true, --So no base chips and no image
+	atlas = "cry_misc",
+	pos = { x = 3, y = 0 },
+	not_fucked = true,
+	force_no_face = true, --true = always face, false = always face
+	--NEW! specific_suit suit. Like abstracted!
+	specific_suit = "cry_abstract",
+	specific_rank = "cry_abstract",
+	config = { extra = { Emult = 1.15, odds_after_play = 2, odds_after_round = 4, marked = false, survive = false } },
+	--#1# emult, #2# in #3# chance card is destroyed after play, #4# in #5$ chance card is destroyed at end of round (even discarded or in deck)
+	loc_vars = function(self, info_queue, card)
+		return {
+			vars = {
+				card.ability.extra.Emult,
+				cry_prob(card.ability.cry_prob, card.ability.extra.odds_after_play, card.ability.cry_rigged),
+				card.ability.extra.odds_after_play,
+				cry_prob(card.ability.cry_prob, card.ability.extra.odds_after_round, card.ability.cry_rigged),
+				card.ability.extra.odds_after_round,
+			},
+		}
+	end,
+	calculate = function(self, card, context)
+		--Druing scoring
+		if
+			context.cardarea == G.play
+			and context.main_scoring
+			and not card.ability.extra.marked
+			and not card.ability.eternal
+			and not card.ability.extra.survive --this presvents repitition of shatter chance by shutting it out once it confirms to "survive"
+			and pseudorandom("cry_abstract_destroy")
+				< cry_prob(card.ability.cry_prob, card.ability.extra.odds_after_play, card.ability.cry_rigged) / card.ability.extra.odds_after_play
+		then -- the 'card.area' part makes sure the card has a chance to survive if in the play area
+			card.ability.extra.marked = true
+		elseif context.cardarea == G.play and context.main_scoring and not card.ability.extra.marked then
+			card.ability.extra.survive = true
+		end
+		if context.cardarea == G.play and context.main_scoring then
+			return {
+				message = localize({
+					type = "variable",
+					key = "a_powmult",
+					vars = {
+						number_format(card.ability.extra.Emult),
+					},
+				}),
+				Emult_mod = card.ability.extra.Emult,
+				colour = G.C.DARK_EDITION,
+			}
+		end
+
+		if
+			context.final_scoring_step
+			and card.ability.extra.marked
+			and not context.repetition
+			and not card.ability.eternal
+			and not (card.will_shatter or card.destroyed or card.shattered)
+		then
+			--print("destroy1")
+			G.E_MANAGER:add_event(Event({
+				trigger = "immediate",
+				func = function()
+					card:juice_up(0.9, 0.9)
+					card:shatter()
+					return true
+				end,
+			}))
+		elseif context.final_scoring_step then
+			card.ability.extra.survive = false
+		end
+	end,
+}
+local instability = {
+	cry_credits = {
+		idea = {
+			"lolxddj",
+		},
+		art = {
+			"lolxddj",
+		},
+		code = {
+			"70UNIK",
+		},
+	},
+	object_type = "Consumable",
+	dependencies = {
+		items = {
+			"set_cry_misc",
+			"m_cry_abstract",
+		},
+	},
+	set = "Tarot",
+	name = "cry-Instability",
+	key = "instability",
+	order = 3,
+	pos = { x = 5, y = 5 },
+	config = { mod_conv = "m_cry_abstract", max_highlighted = 1 },
+	atlas = "atlasnotjokers",
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = G.P_CENTERS.m_cry_abstract
+
+		return { vars = { card and card.ability.max_highlighted or self.config.max_highlighted } }
+	end,
+}
 local blessing = {
 	cry_credits = {
 		idea = {
@@ -1994,35 +2131,39 @@ local azure_seal = {
 	pos = { x = 0, y = 2 },
 	-- This is still quite jank
 	calculate = function(self, card, context)
-		if context.destroying_card and not card.will_shatter then
-			card.will_shatter = true
-			G.E_MANAGER:add_event(Event({
-				trigger = "before",
-				delay = 0.0,
-				func = function()
-					local card_type = "Planet"
-					local _planet = nil
-					if G.GAME.last_hand_played then
-						for k, v in pairs(G.P_CENTER_POOLS.Planet) do
-							if v.config.hand_type == G.GAME.last_hand_played then
-								_planet = v.key
-								break
+		if context.destroying_card and context.cardarea == G.play then
+			for i, cards in ipairs(context.full_hand) do
+				if cards == card then
+					card.will_shatter = true
+					G.E_MANAGER:add_event(Event({
+						trigger = "before",
+						delay = 0.0,
+						func = function()
+							local card_type = "Planet"
+							local _planet = nil
+							if G.GAME.last_hand_played then
+								for k, v in pairs(G.P_CENTER_POOLS.Planet) do
+									if v.config.hand_type == G.GAME.last_hand_played then
+										_planet = v.key
+										break
+									end
+								end
 							end
-						end
-					end
 
-					for i = 1, self.config.planets_amount do
-						local card = create_card(card_type, G.consumeables, nil, nil, nil, nil, _planet, "cry_azure")
+							for i = 1, self.config.planets_amount do
+								local card =
+									create_card(card_type, G.consumeables, nil, nil, nil, nil, _planet, "cry_azure")
 
-						card:set_edition({ negative = true }, true)
-						card:add_to_deck()
-						G.consumeables:emplace(card)
-					end
-					return true
-				end,
-			}))
-
-			return { remove = true }
+								card:set_edition({ negative = true }, true)
+								card:add_to_deck()
+								G.consumeables:emplace(card)
+							end
+							return true
+						end,
+					}))
+					return { remove = true }
+				end
+			end
 		end
 	end,
 }
@@ -2089,6 +2230,8 @@ local miscitems = {
 	azure_seal,
 	--double_sided,
 	--meld,
+	abstract,
+	instability,
 	absolute,
 	light,
 	seraph,
@@ -2108,6 +2251,31 @@ return {
 			elseif self.ignore_shadow["cry_noshadow"] then
 				self.ignore_shadow["cry_noshadow"] = nil
 			end
+		end
+		function Card:calculate_abstract_break()
+			if self.config.center_key == "m_cry_abstract" and not self.ability.extra.marked then
+				if
+					pseudorandom("cry_abstract_destroy2")
+					< cry_prob(self.ability.cry_prob, self.ability.extra.odds_after_round, self.ability.cry_rigged)
+						/ self.ability.extra.odds_after_round
+				then
+					self.ability.extra.marked = true
+					--KUFMO HAS abstract!!!!111!!!
+					G.E_MANAGER:add_event(Event({
+						trigger = "immediate",
+						delay = "0.1",
+						func = function()
+							self:juice_up(2, 2)
+							self:shatter(0.2)
+							return true
+						end,
+					}))
+					return true
+				else
+					return false
+				end
+			end
+			return false
 		end
 	end,
 	items = miscitems,

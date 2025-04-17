@@ -512,54 +512,20 @@ function set_profile_progress()
 	end
 end
 
-Cryptid.big_num_whitelist = {
-	j_ride_the_bus = true,
-	j_egg = true,
-	j_runner = true,
-	j_ice_cream = true,
-	j_constellation = true,
-	j_green_joker = true,
-	j_red_card = true,
-	j_madness = true,
-	j_square = true,
-	j_vampire = true,
-	j_hologram = true,
-	j_obelisk = true,
-	j_turtle_bean = true,
-	j_lucky_cat = true,
-	j_flash = true,
-	j_popcorn = true,
-	j_trousers = true,
-	j_ramen = true,
-	j_castle = true,
-	j_campfire = true,
-	j_throwback = true,
-	j_glass = true,
-	j_wee = true,
-	j_hit_the_road = true,
-	j_caino = true,
-	j_yorick = true,
-	-- Once all Cryptid Jokers get support for this, these can be removed
-	j_cry_dropshot = true,
-	j_cry_wee_fib = true,
-	j_cry_whip = true,
-	j_cry_pickle = true,
-	j_cry_chili_pepper = true,
-	j_cry_cursor = true,
-	j_cry_jimball = true,
-	j_cry_eternalflame = true,
-	j_cry_fspinner = true,
-	j_cry_krustytheclown = true,
-	j_cry_antennastoheaven = true,
-	j_cry_mondrian = true,
-	j_cry_spaceglobe = true,
-	j_cry_m = true,
-	j_cry_exponentia = true,
-	j_cry_crustulum = true,
-	j_cry_primus = true,
-	j_cry_stella_mortis = true,
-	j_cry_hugem = true,
-	j_cry_mprime = true,
+Cryptid.big_num_blacklist = {
+	-- empty for now add more later
+
+	-- Add your Jokers here if you *don't* want to have it's numbers go into BigNum
+	-- FORMAT: <Joker Key ("j_cry_oil_lamp")> = true,
+	-- TARGET: BigNum Black List
+}
+
+Cryptid.mod_whitelist = {
+	Cryptid = true,
+
+	-- Add your ModName here if you want your mod to have it's jokers' values go into BigNum
+	-- FORMAT: <ModName> = true,
+	-- TARGET: BigNum Mod Whitelist
 }
 
 function Cryptid.is_card_big(joker)
@@ -567,7 +533,18 @@ function Cryptid.is_card_big(joker)
 	if not center then
 		return false
 	end
-	return Cryptid.big_num_whitelist[center.key or "Nope!"] --[[or
+
+	if center.immutable and center.immutable == true then
+		return false
+	end
+
+	if center.mod and not Cryptid.mod_whitelist[center.mod.name] then
+		return false
+	end
+
+	local in_blacklist = Cryptid.big_num_blacklist[center.key or "Nope!"] or false
+
+	return not in_blacklist --[[or
 	       (center.mod and center.mod.id == "Cryptid" and not center.no_break_infinity) or center.break_infinity--]]
 end
 
@@ -578,7 +555,7 @@ end
 function Cryptid.safe_get(t, ...)
 	local current = t
 	for _, k in ipairs({ ... }) do
-		if current[k] == nil then
+		if not current or current[k] == nil then
 			return false
 		end
 		current = current[k]
@@ -759,4 +736,48 @@ function Cryptid.is_shiny()
 		return true
 	end
 	return false
+end
+
+--Abstracted cards
+function Cryptid.cry_enhancement_has_specific_suit(card)
+	for k, _ in pairs(SMODS.get_enhancements(card)) do
+		if G.P_CENTERS[k].specific_suit then
+			return true
+		end
+	end
+	return false
+end
+function Cryptid.cry_enhancement_get_specific_suit(card)
+	for k, _ in pairs(SMODS.get_enhancements(card)) do
+		if G.P_CENTERS[k].specific_suit then
+			return G.P_CENTERS[k].specific_suit
+		end
+	end
+	return nil
+end
+
+function Cryptid.cry_enhancement_has_specific_rank(card)
+	for k, _ in pairs(SMODS.get_enhancements(card)) do
+		if G.P_CENTERS[k].specific_rank then
+			return true
+		end
+	end
+	return false
+end
+function Cryptid.cry_enhancement_get_specific_rank(card)
+	for k, _ in pairs(SMODS.get_enhancements(card)) do
+		if G.P_CENTERS[k].specific_rank then
+			return G.P_CENTERS[k].specific_rank
+		end
+	end
+	return nil
+end
+--For better durability (at the expense of performance), this finds the rank ID of a custom rank (such as abstract).
+function Cryptid.cry_rankname_to_id(rankname)
+	for i, v in pairs(SMODS.Rank.obj_buffer) do
+		if rankname == v then
+			return i
+		end
+	end
+	return nil
 end

@@ -24,6 +24,20 @@ local very_fair = {
 			return avts(...)
 		end
 	end,
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if args.type == "win_deck" then
+			if get_deck_win_stake("b_cry_blank") > 0 then
+				unlock_card(self)
+			end
+		end
+		if args.type == "cry_lock_all" then
+			lock_card(self)
+		end
+		if args.type == "cry_unlock_all" then
+			unlock_card(self)
+		end
+	end,
 }
 local equilibrium = {
 	object_type = "Back",
@@ -41,32 +55,22 @@ local equilibrium = {
 	apply = function(self)
 		G.GAME.modifiers.cry_equilibrium = true
 	end,
-	init = function(self)
-		local gp = get_pack
-		function get_pack(k, t)
-			if G.GAME.modifiers.cry_equilibrium then
-				if not P_CRY_ITEMS then
-					P_CRY_ITEMS = {}
-					local valid_pools = { "Joker", "Consumeables", "Voucher", "Booster" }
-					for _, id in ipairs(valid_pools) do
-						for k, v in pairs(G.P_CENTER_POOLS[id]) do
-							if not Cryptid.no(v, "doe", k) then
-								P_CRY_ITEMS[#P_CRY_ITEMS + 1] = v.key
-							end
-						end
-					end
-					for k, v in pairs(G.P_CARDS) do
-						if not Cryptid.no(v, "doe", k) then
-							P_CRY_ITEMS[#P_CRY_ITEMS + 1] = v.key
-						end
-					end
-				end
-				return G.P_CENTERS[pseudorandom_element(
-					P_CRY_ITEMS,
-					pseudoseed("cry_equipackbrium" .. G.GAME.round_resets.ante)
-				)]
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if Cryptid.safe_get(G, "jokers") then
+			local count = 0
+			for i = 1, #G.jokers.cards do
+				count = count + 1
 			end
-			return gp(k, t)
+			if count >= 10 then
+				unlock_card(self)
+			end
+		end
+		if args.type == "cry_lock_all" then
+			lock_card(self)
+		end
+		if args.type == "cry_unlock_all" then
+			unlock_card(self)
 		end
 	end,
 }
@@ -87,6 +91,23 @@ local misprint = {
 		G.GAME.modifiers.cry_misprint_min = (G.GAME.modifiers.cry_misprint_min or 1) * self.config.cry_misprint_min
 		G.GAME.modifiers.cry_misprint_max = (G.GAME.modifiers.cry_misprint_max or 1) * self.config.cry_misprint_max
 	end,
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if Cryptid.safe_get(G, "jokers") then
+			for i = 1, #G.jokers.cards do
+				if G.jokers.cards[i].edition and G.jokers.cards[i].edition.cry_glitched then
+					unlock_card(self)
+					break
+				end
+			end
+		end
+		if args.type == "cry_lock_all" then
+			lock_card(self)
+		end
+		if args.type == "cry_unlock_all" then
+			unlock_card(self)
+		end
+	end,
 }
 local infinite = {
 	object_type = "Back",
@@ -104,6 +125,20 @@ local infinite = {
 	apply = function(self)
 		G.GAME.modifiers.cry_highlight_limit = self.config.cry_highlight_limit
 	end,
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if args.type == "hand_contents" then
+			if #args.cards >= 6 then
+				unlock_card(self)
+			end
+		end
+		if args.type == "cry_lock_all" then
+			lock_card(self)
+		end
+		if args.type == "cry_unlock_all" then
+			unlock_card(self)
+		end
+	end,
 }
 local conveyor = {
 	object_type = "Back",
@@ -119,6 +154,18 @@ local conveyor = {
 	atlas = "atlasdeck",
 	apply = function(self)
 		G.GAME.modifiers.cry_conveyor = true
+	end,
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if args.cry_used_consumable == "c_cry_analog" then
+			unlock_card(self)
+		end
+		if args.type == "cry_lock_all" then
+			lock_card(self)
+		end
+		if args.type == "cry_unlock_all" then
+			unlock_card(self)
+		end
 	end,
 }
 local CCD = {
@@ -136,6 +183,18 @@ local CCD = {
 	atlas = "atlasdeck",
 	apply = function(self)
 		G.GAME.modifiers.cry_ccd = true
+	end,
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if args.cry_used_consumable == "c_cry_hammerspace" then
+			unlock_card(self)
+		end
+		if args.type == "cry_lock_all" then
+			lock_card(self)
+		end
+		if args.type == "cry_unlock_all" then
+			unlock_card(self)
+		end
 	end,
 }
 local wormhole = {
@@ -173,6 +232,22 @@ local wormhole = {
 			end,
 		}, true)
 	end,
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if Cryptid.safe_get(G, "jokers") then
+			for i = 1, #G.jokers.cards do
+				if G.jokers.cards[i].config.center.rarity == "cry_exotic" then
+					unlock_card(self)
+				end
+			end
+		end
+		if args.type == "cry_lock_all" then
+			lock_card(self)
+		end
+		if args.type == "cry_unlock_all" then
+			unlock_card(self)
+		end
+	end,
 }
 local redeemed = {
 	object_type = "Back",
@@ -193,6 +268,7 @@ local redeemed = {
 		local cr = Card.redeem
 		function Card:redeem()
 			cr(self)
+
 			if G.GAME.modifiers.cry_redeemed then
 				if
 					#G.play.cards == 0
@@ -247,6 +323,20 @@ local redeemed = {
 					end
 				end
 			end
+		end
+	end,
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if args.type == "discover_amount" then
+			if G.DISCOVER_TALLIES.vouchers.tally / G.DISCOVER_TALLIES.vouchers.of >= 1 then
+				unlock_card(self)
+			end
+		end
+		if args.type == "cry_lock_all" then
+			lock_card(self)
+		end
+		if args.type == "cry_unlock_all" then
+			unlock_card(self)
 		end
 	end,
 }
@@ -310,6 +400,26 @@ local legendary = {
 				end
 			end,
 		}))
+	end,
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if Cryptid.safe_get(G, "jokers") then
+			local count = 0
+			for i = 1, #G.jokers.cards do
+				if G.jokers.cards[i].config.center.rarity == 4 then
+					count = count + 1
+				end
+			end
+			if count >= 2 then
+				unlock_card(self)
+			end
+		end
+		if args.type == "cry_lock_all" then
+			lock_card(self)
+		end
+		if args.type == "cry_unlock_all" then
+			unlock_card(self)
+		end
 	end,
 }
 local critical = {
@@ -375,6 +485,23 @@ local critical = {
 			end
 		end
 	end,
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if Cryptid.safe_get(G, "jokers") then
+			for i = 1, #G.jokers.cards do
+				if G.jokers.cards[i].ability.cry_rigged then
+					unlock_card(self)
+					break
+				end
+			end
+		end
+		if args.type == "cry_lock_all" then
+			lock_card(self)
+		end
+		if args.type == "cry_unlock_all" then
+			unlock_card(self)
+		end
+	end,
 }
 local glowing = {
 	object_type = "Back",
@@ -404,6 +531,20 @@ local glowing = {
 			end
 		end
 	end,
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if args.type == "win_deck" then
+			if get_deck_win_stake("b_cry_beige") > 0 then
+				unlock_card(self)
+			end
+		end
+		if args.type == "cry_lock_all" then
+			lock_card(self)
+		end
+		if args.type == "cry_unlock_all" then
+			unlock_card(self)
+		end
+	end,
 }
 local beta = {
 	object_type = "Back",
@@ -420,6 +561,20 @@ local beta = {
 	atlas = "atlasdeck",
 	apply = function(self)
 		G.GAME.modifiers.cry_beta = true
+	end,
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if args.type == "win_deck" then
+			if get_deck_win_stake() >= 9 then
+				unlock_card(self)
+			end
+		end
+		if args.type == "cry_lock_all" then
+			lock_card(self)
+		end
+		if args.type == "cry_unlock_all" then
+			unlock_card(self)
+		end
 	end,
 }
 local bountiful = {
@@ -438,6 +593,23 @@ local bountiful = {
 	apply = function(self)
 		G.GAME.modifiers.cry_forced_draw_amount = self.config.cry_forced_draw_amount
 	end,
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if args.type == "round_win" then
+			if
+				G.GAME.blind.name == "The Serpent"
+				and G.GAME.current_round.discards_left == G.GAME.round_resets.discards
+			then
+				unlock_card(self)
+			end
+		end
+		if args.type == "cry_lock_all" then
+			lock_card(self)
+		end
+		if args.type == "cry_unlock_all" then
+			unlock_card(self)
+		end
+	end,
 }
 local beige = {
 	object_type = "Back",
@@ -453,6 +625,20 @@ local beige = {
 	atlas = "atlasdeck",
 	apply = function(self)
 		G.GAME.modifiers.cry_common_value_quad = true
+	end,
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if args.type == "discover_amount" then
+			if args.amount >= 200 then
+				unlock_card(self)
+			end
+		end
+		if args.type == "cry_lock_all" then
+			lock_card(self)
+		end
+		if args.type == "cry_unlock_all" then
+			unlock_card(self)
+		end
 	end,
 }
 local blank = {
@@ -1015,6 +1201,20 @@ local antimatter = {
 				table.insert(consumable_table, "c_hex")
 			end
 			return consumable_table
+		end
+	end,
+	unlocked = false,
+	check_for_unlock = function(self, args)
+		if args.type == "win_deck" then
+			if get_deck_win_stake("b_cry_blank") > 0 and get_deck_win_stake() >= 8 then
+				unlock_card(self)
+			end
+		end
+		if args.type == "cry_lock_all" then
+			lock_card(self)
+		end
+		if args.type == "cry_unlock_all" then
+			unlock_card(self)
 		end
 	end,
 }
