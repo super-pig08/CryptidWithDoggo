@@ -3678,7 +3678,7 @@ return {
 				},
 			},
 			c_cry_instability = {
-				name = "The Instability",
+				name = "Instability",
 				text = {
 					"Enhances {C:attention}#1#{} selected card#<s>1#",
 					"into an {C:attention}Abstract Card",
