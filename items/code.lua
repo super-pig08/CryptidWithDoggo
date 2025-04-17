@@ -5022,7 +5022,6 @@ local cut = {
 	dependencies = {
 		items = {
 			"set_cry_code",
-			"set_cry_misc_joker",
 		},
 	},
 	object_type = "Joker",
@@ -5118,7 +5117,6 @@ local blender = {
 	dependencies = {
 		items = {
 			"set_cry_code",
-			"set_cry_misc_joker",
 		},
 	},
 	object_type = "Joker",
@@ -5159,7 +5157,6 @@ local python = {
 	dependencies = {
 		items = {
 			"set_cry_code",
-			"set_cry_misc_joker",
 		},
 	},
 	object_type = "Joker",
