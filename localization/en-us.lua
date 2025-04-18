@@ -554,6 +554,7 @@ return {
 				name = "HOOK://",
 				text = {
 					"To Be {C:cry_code}Implemented{}",
+					"in a future {C:cry_code}update{}",
 				},
 			},
 			c_cry_inst = {
@@ -576,6 +577,7 @@ return {
 				name = "://LOG",
 				text = {
 					"To Be {C:cry_code}Implemented{}",
+					"in a future {C:cry_code}update{}",
 				},
 			},
 			c_cry_machinecode = {
@@ -638,6 +640,7 @@ return {
 				name = "://QUANTIFY",
 				text = {
 					"To Be {C:cry_code}Implemented{}",
+					"in a future {C:cry_code}update{}",
 				},
 			},
 			c_cry_reboot = {
@@ -694,6 +697,7 @@ return {
 				name = "://UPDATE",
 				text = {
 					"To Be {C:cry_code}Determined{}",
+					"in a future {C:cry_code}update{}",
 				},
 			},
 			c_cry_variable = {
