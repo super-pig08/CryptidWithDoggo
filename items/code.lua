@@ -1,4 +1,3 @@
---note to self: refer to https://docs.google.com/document/d/1LNaIouU3vrtWIuPBdFCqLyjYAjVtq7t64xjHnckEY50/edit for order of remaining consumables
 local code = {
 	object_type = "ConsumableType",
 	key = "Code",
@@ -47,7 +46,7 @@ local pack1 = { -- Program Pack, 1/2
 	pos = { x = 0, y = 0 },
 	config = { extra = 2, choose = 1 },
 	cost = 4,
-	order = 1,
+	order = 132,
 	weight = 0.96,
 	create_card = function(self, card)
 		return create_card("Code", G.pack_cards, nil, nil, true, true, nil, "cry_program_1")
@@ -92,7 +91,7 @@ local pack2 = { -- Program Pack Alt, 1/2
 	pos = { x = 1, y = 0 },
 	config = { extra = 2, choose = 1 },
 	cost = 4,
-	order = 2,
+	order = 133,
 	weight = 0.96,
 	create_card = function(self, card)
 		return create_card("Code", G.pack_cards, nil, nil, true, true, nil, "cry_program_2")
@@ -137,7 +136,7 @@ local packJ = { -- Jumbo Program Pack, 1/4
 	pos = { x = 2, y = 0 },
 	config = { extra = 4, choose = 1 },
 	cost = 6,
-	order = 3,
+	order = 134,
 	weight = 0.48,
 	create_card = function(self, card)
 		return create_card("Code", G.pack_cards, nil, nil, true, true, nil, "cry_program_j")
@@ -182,7 +181,7 @@ local packM = { -- Mega Program Pack, 2/4
 	pos = { x = 3, y = 0 },
 	config = { extra = 4, choose = 2 },
 	cost = 8,
-	order = 4,
+	order = 135,
 	weight = 0.12,
 	create_card = function(self, card)
 		return create_card("Code", G.pack_cards, nil, nil, true, true, nil, "cry_program_m")
@@ -223,7 +222,7 @@ local console = { -- Console Tag, gives a free Program Pack
 	object_type = "Tag",
 	atlas = "tag_cry",
 	name = "cry-Console Tag",
-	order = 26,
+	order = 256,
 	pos = { x = 3, y = 2 },
 	config = { type = "new_blind_choice" },
 	key = "console",
@@ -2150,6 +2149,7 @@ local rigged = { -- Rigged sticker, forces the top odds of a random chance to be
 	dependencies = {
 		items = {
 			"c_cry_seed",
+			"set_cry_code",
 		},
 	},
 	object_type = "Sticker",
@@ -2159,6 +2159,7 @@ local rigged = { -- Rigged sticker, forces the top odds of a random chance to be
 	no_sticker_sheet = true,
 	prefix_config = { key = false },
 	badge_colour = HEX("14b341"),
+	order = 605,
 	draw = function(self, card) --don't draw shine
 		local notilt = nil
 		if card.area and card.area.config.type == "deck" then
@@ -2418,6 +2419,7 @@ local hooked =
 	{ -- Hooked sticker, when one joker is triggered, trigger the other joker via context.demicolon (NOT IMPLEMENTED)
 		dependencies = {
 			items = {
+				"set_cry_code",
 				"c_cry_hook",
 			},
 		},
@@ -2425,6 +2427,7 @@ local hooked =
 		atlas = "sticker",
 		pos = { x = 5, y = 3 },
 		no_edeck = true,
+		order = 606,
 		loc_vars = function(self, info_queue, card)
 			local var
 			if not card or not card.hook_id then
@@ -2677,97 +2680,96 @@ local revert = { -- ://Revert, loads the game state from the end of the last bos
 	end,
 }
 
-local cryfunction =
-	{ -- Function://, Saves the last 3 consumables used on first use, every use thereafter creates a copy of all 3 of those
-		cry_credits = {
-			idea = {
-				"HexaCryonic",
-			},
-			art = {
-				"HexaCryonic",
-			},
-			code = {
-				"Nova",
-			},
+local cryfunction = { -- Function://, Saves the last 3 consumables used on first use, every use thereafter creates a copy of all 3 of those
+	cry_credits = {
+		idea = {
+			"HexaCryonic",
 		},
-		dependencies = {
-			items = {
-				"set_cry_code",
-			},
+		art = {
+			"HexaCryonic",
 		},
-		object_type = "Consumable",
-		set = "Code",
-		name = "cry-Function",
-		key = "cryfunction",
-		atlas = "atlasnotjokers",
-		pos = { x = 11, y = 0 },
-		cost = 4,
-		order = 19,
-		loc_vars = function(self, info_queue, card)
-			info_queue[#info_queue + 1] = {
-				key = "cry_function_sticker_desc",
-				set = "Other",
-				vars = {
-					(G.GAME.cry_function_cards or G.GAME.cry_last_used_consumeables)[1],
-					(G.GAME.cry_function_cards or G.GAME.cry_last_used_consumeables)[2],
-					(G.GAME.cry_function_cards or G.GAME.cry_last_used_consumeables)[3],
-				},
-			}
-		end,
-		can_use = function(self, card)
-			return true
-		end,
-		use = function(self, card, area, copier)
-			if #G.consumeables.cards < G.consumeables.config.card_limit then
-				if not G.GAME.cry_function_cards and #G.GAME.cry_last_used_consumeables == 0 then
-					G.E_MANAGER:add_event(Event({
-						func = function()
-							local new_card = create_card(
-								"Code",
-								G.consumeables,
-								nil,
-								nil,
-								nil,
-								nil,
-								"c_cry_cryfunction",
-								"cry_cryfunction"
-							)
-							new_card:add_to_deck()
-							G.consumeables:emplace(new_card)
-							G.GAME.consumeable_buffer = 0
-							return true
-						end,
-					}))
-				elseif not G.GAME.cry_function_cards then
-					G.GAME.cry_function_cards = {}
-					for i = 1, #G.GAME.cry_function_stupid_workaround do
-						G.GAME.cry_function_cards[i] = G.GAME.cry_function_stupid_workaround[i]
-					end
-				else
-					G.E_MANAGER:add_event(Event({
-						func = function()
-							local new_card = create_card(
-								"Consumeables",
-								G.consumeables,
-								nil,
-								nil,
-								nil,
-								nil,
-								G.GAME.cry_function_cards[1],
-								"cry_cryfunction"
-							)
-							new_card:add_to_deck()
-							new_card.ability.cry_function_sticker = true
-							new_card.ability.cry_function_counter = 1
-							G.consumeables:emplace(new_card)
-							G.GAME.consumeable_buffer = 0
-							return true
-						end,
-					}))
+		code = {
+			"Nova",
+		},
+	},
+	dependencies = {
+		items = {
+			"set_cry_code",
+		},
+	},
+	object_type = "Consumable",
+	set = "Code",
+	name = "cry-Function",
+	key = "cryfunction",
+	atlas = "atlasnotjokers",
+	pos = { x = 11, y = 0 },
+	cost = 4,
+	order = 19,
+	loc_vars = function(self, info_queue, card)
+		info_queue[#info_queue + 1] = {
+			key = "cry_function_sticker_desc",
+			set = "Other",
+			vars = {
+				(G.GAME.cry_function_cards or G.GAME.cry_last_used_consumeables)[1],
+				(G.GAME.cry_function_cards or G.GAME.cry_last_used_consumeables)[2],
+				(G.GAME.cry_function_cards or G.GAME.cry_last_used_consumeables)[3],
+			},
+		}
+	end,
+	can_use = function(self, card)
+		return true
+	end,
+	use = function(self, card, area, copier)
+		if #G.consumeables.cards < G.consumeables.config.card_limit then
+			if not G.GAME.cry_function_cards and #G.GAME.cry_last_used_consumeables == 0 then
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						local new_card = create_card(
+							"Code",
+							G.consumeables,
+							nil,
+							nil,
+							nil,
+							nil,
+							"c_cry_cryfunction",
+							"cry_cryfunction"
+						)
+						new_card:add_to_deck()
+						G.consumeables:emplace(new_card)
+						G.GAME.consumeable_buffer = 0
+						return true
+					end,
+				}))
+			elseif not G.GAME.cry_function_cards then
+				G.GAME.cry_function_cards = {}
+				for i = 1, #G.GAME.cry_function_stupid_workaround do
+					G.GAME.cry_function_cards[i] = G.GAME.cry_function_stupid_workaround[i]
 				end
+			else
+				G.E_MANAGER:add_event(Event({
+					func = function()
+						local new_card = create_card(
+							"Consumeables",
+							G.consumeables,
+							nil,
+							nil,
+							nil,
+							nil,
+							G.GAME.cry_function_cards[1],
+							"cry_cryfunction"
+						)
+						new_card:add_to_deck()
+						new_card.ability.cry_function_sticker = true
+						new_card.ability.cry_function_counter = 1
+						G.consumeables:emplace(new_card)
+						G.GAME.consumeable_buffer = 0
+						return true
+					end,
+				}))
 			end
-		end,
-	}
+		end
+	end,
+}
 local function_sticker = { -- TODO write this
 	dependencies = {
 		items = {
@@ -2782,6 +2784,7 @@ local function_sticker = { -- TODO write this
 	no_sticker_sheet = true,
 	prefix_config = { key = false },
 	badge_colour = HEX("14b341"),
+	order = 607,
 	draw = function(self, card) --don't draw shine
 		local notilt = nil
 		if card.area and card.area.config.type == "deck" then
@@ -2808,9 +2811,6 @@ local function_sticker = { -- TODO write this
 		) -- this doesn't really do much tbh, but the slight effect is nice
 		card.hover_tilt = card.hover_tilt * 2
 	end,
-	-- calculate = function(self, card, context)
-	-- 	return false
-	-- end,
 }
 
 local run = { -- ://Run, visit a shop mid-blind
@@ -3258,56 +3258,57 @@ local global = { -- ://Global, gives a selected card the Global sticker
 		end
 	end,
 }
-local global_sticker =
-	{ -- Global sticker, always drawn on blind start or when booster pack opened (before hand drawn, also drawn in packs like celestial that you typically wouldn't)
-		dependencies = {
-			items = {
-				"c_cry_global",
-			},
+local global_sticker = { -- Global sticker, always drawn on blind start or when booster pack opened (before hand drawn, also drawn in packs like celestial that you typically wouldn't)
+	dependencies = {
+		items = {
+			"c_cry_global",
+			"set_cry_code",
 		},
-		object_type = "Sticker",
-		atlas = "sticker",
-		pos = { x = 6, y = 5 },
-		key = "cry_global_sticker",
-		no_sticker_sheet = true,
-		prefix_config = { key = false },
-		badge_colour = HEX("14b341"),
-		draw = function(self, card) --don't draw shine                       -- i have no idea what any of this does, someone else can do all that (yes i took it from seed how could you tell)
-			local notilt = nil
-			if card.area and card.area.config.type == "deck" then
-				notilt = true
-			end
-			if not G.shared_stickers["cry_global_sticker2"] then
-				G.shared_stickers["cry_global_sticker2"] =
-					Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_sticker"], { x = 5, y = 5 })
-			end -- no matter how late i init this, it's always late, so i'm doing it in the damn draw function
+	},
+	object_type = "Sticker",
+	atlas = "sticker",
+	pos = { x = 6, y = 5 },
+	key = "cry_global_sticker",
+	no_sticker_sheet = true,
+	prefix_config = { key = false },
+	badge_colour = HEX("14b341"),
+	order = 608,
+	draw = function(self, card) --don't draw shine                       -- i have no idea what any of this does, someone else can do all that (yes i took it from seed how could you tell)
+		local notilt = nil
+		if card.area and card.area.config.type == "deck" then
+			notilt = true
+		end
+		if not G.shared_stickers["cry_global_sticker2"] then
+			G.shared_stickers["cry_global_sticker2"] =
+				Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_sticker"], { x = 5, y = 5 })
+		end -- no matter how late i init this, it's always late, so i'm doing it in the damn draw function
 
-			G.shared_stickers[self.key].role.draw_major = card
-			G.shared_stickers["cry_global_sticker2"].role.draw_major = card
+		G.shared_stickers[self.key].role.draw_major = card
+		G.shared_stickers["cry_global_sticker2"].role.draw_major = card
 
-			G.shared_stickers[self.key]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
+		G.shared_stickers[self.key]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
 
-			card.hover_tilt = card.hover_tilt / 2 -- call it spaghetti, but it's what hologram does so...
-			G.shared_stickers["cry_global_sticker2"]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
-			G.shared_stickers["cry_global_sticker2"]:draw_shader(
-				"hologram",
-				nil,
-				card.ARGS.send_to_shader,
-				notilt,
-				card.children.center
-			) -- this doesn't really do much tbh, but the slight effect is nice
-			card.hover_tilt = card.hover_tilt * 2
-		end,
-		calculate = function(self, card, context)
-			if (context.setting_blind or context.open_booster) and context.cardarea == G.deck then
-				draw_card(G.deck, G.hand, nil, nil, nil, card)
-				--[[card.globalticks = (card.globalticks or 1) - 1
-			if card.globalticks == 0 then
-				card.global = nil
-			end--]]
-			end
-		end,
-	}
+		card.hover_tilt = card.hover_tilt / 2 -- call it spaghetti, but it's what hologram does so...
+		G.shared_stickers["cry_global_sticker2"]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
+		G.shared_stickers["cry_global_sticker2"]:draw_shader(
+			"hologram",
+			nil,
+			card.ARGS.send_to_shader,
+			notilt,
+			card.children.center
+		) -- this doesn't really do much tbh, but the slight effect is nice
+		card.hover_tilt = card.hover_tilt * 2
+	end,
+	calculate = function(self, card, context)
+		if (context.setting_blind or context.open_booster) and context.cardarea == G.deck then
+			draw_card(G.deck, G.hand, nil, nil, nil, card)
+			--[[card.globalticks = (card.globalticks or 1) - 1
+		if card.globalticks == 0 then
+			card.global = nil
+		end--]]
+		end
+	end,
+}
 
 local variable = { -- ://Variable, change 2 selected cards' ranks to one of your choosing
 	cry_credits = {
@@ -4268,7 +4269,7 @@ local automaton = {
 	key = "automaton",
 	pos = { x = 12, y = 1 },
 	config = { create = 1 },
-	order = 1002,
+	order = 602,
 	atlas = "atlasnotjokers",
 	loc_vars = function(self, info_queue, card)
 		return { vars = { Cryptid.safe_get(card, "ability", "create") or self.config.create } }
@@ -4296,47 +4297,46 @@ local automaton = {
 		delay(0.6)
 	end,
 }
-local green_seal =
-	{ -- NONE OF THESE HAVE UPDATED ORDERS yet, this will be corrected in future versions when i get around to making it all, for now it's just code and tarots that have it all
-		dependencies = {
-			items = {
-				"set_cry_code",
-			},
+local green_seal = {
+	dependencies = {
+		items = {
+			"set_cry_code",
 		},
-		object_type = "Seal",
-		name = "cry-Green-Seal",
-		key = "green",
-		badge_colour = HEX("12f254"), --same as code cards
-		atlas = "cry_misc",
-		pos = { x = 1, y = 2 },
-
-		calculate = function(self, card, context)
-			if context.cardarea == "unscored" and context.main_scoring then
-				for k, v in ipairs(context.scoring_hand) do
-					v.cry_green_incompat = true
-				end
-				for k, v in ipairs(context.full_hand) do
-					if not v.cry_green_incompat then
-						G.E_MANAGER:add_event(Event({
-							func = function()
-								if G.consumeables.config.card_limit > #G.consumeables.cards then
-									local c =
-										create_card("Code", G.consumeables, nil, nil, nil, nil, nil, "cry_green_seal")
-									c:add_to_deck()
-									G.consumeables:emplace(c)
-									v:juice_up()
-								end
-								return true
-							end,
-						}))
-					end
-				end
-				for k, v in ipairs(context.scoring_hand) do
-					v.cry_green_incompat = nil
+	},
+	object_type = "Seal",
+	name = "cry-Green-Seal",
+	key = "green",
+	badge_colour = HEX("12f254"), --same as code cards
+	atlas = "cry_misc",
+	pos = { x = 1, y = 2 },
+	order = 604,
+	calculate = function(self, card, context)
+		if context.cardarea == "unscored" and context.main_scoring then
+			for k, v in ipairs(context.scoring_hand) do
+				v.cry_green_incompat = true
+			end
+			for k, v in ipairs(context.full_hand) do
+				if not v.cry_green_incompat then
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							if G.consumeables.config.card_limit > #G.consumeables.cards then
+								local c =
+									create_card("Code", G.consumeables, nil, nil, nil, nil, nil, "cry_green_seal")
+								c:add_to_deck()
+								G.consumeables:emplace(c)
+								v:juice_up()
+							end
+							return true
+						end,
+					}))
 				end
 			end
-		end,
-	}
+			for k, v in ipairs(context.scoring_hand) do
+				v.cry_green_incompat = nil
+			end
+		end
+	end,
+}
 local source = {
 	cry_credits = {
 		idea = {
@@ -4351,13 +4351,14 @@ local source = {
 	},
 	dependencies = {
 		items = {
+			"set_cry_code",
 			"cry_green",
 		},
 	},
 	object_type = "Consumable",
 	set = "Spectral",
 	name = "cry-Source",
-	order = 9,
+	order = 604,
 	key = "source",
 	config = {
 		-- This will add a tooltip.
@@ -4429,7 +4430,7 @@ local pointer = {
 	pos = { x = 11, y = 3 },
 	hidden = true,
 	soul_set = "Code",
-	order = 41,
+	order = 20001,
 	atlas = "atlasnotjokers",
 	can_use = function(self, card)
 		return true
@@ -5316,7 +5317,7 @@ local encoded = {
 	object_type = "Back",
 	name = "cry-Encoded",
 	key = "encoded",
-	order = 11,
+	order = 257,
 	pos = { x = 2, y = 5 },
 	atlas = "atlasdeck",
 	apply = function(self)
@@ -5381,7 +5382,7 @@ local CodeJoker = {
 	extra_gamesets = { "exp_modest" },
 	rarity = "cry_epic",
 	cost = 11,
-	order = 109,
+	order = 301,
 	blueprint_compat = true,
 	atlas = "atlasepic",
 	calculate = function(self, card, context)
@@ -5447,7 +5448,7 @@ local copypaste = {
 	name = "cry-copypaste",
 	key = "copypaste",
 	pos = { x = 3, y = 4 },
-	order = 110,
+	order = 302,
 	immune_to_chemach = true,
 	config = {
 		extra = {
@@ -5579,7 +5580,7 @@ local cut = {
 	pos = { x = 2, y = 2 },
 	rarity = 2,
 	cost = 7,
-	order = 108,
+	order = 303,
 	blueprint_compat = true,
 	perishable_compat = false,
 	atlas = "atlasthree",
@@ -5671,7 +5672,7 @@ local blender = {
 	cost = 5,
 	blueprint_compat = true,
 	atlas = "atlasthree",
-	order = 111,
+	order = 304,
 	calculate = function(self, card, context)
 		if
 			context.using_consumeable
@@ -5719,7 +5720,7 @@ local python = {
 	blueprint_compat = true,
 	perishable_compat = false,
 	atlas = "atlasthree",
-	order = 112,
+	order = 305,
 	loc_vars = function(self, info_queue, center)
 		return {
 			vars = {
@@ -5814,7 +5815,8 @@ local code_cards = {
 	assemble,
 	inst,
 	revert,
-	cryfunction,
+	-- cryfunction, FINISHED: NEEDS ART
+	-- function_sticker, see above
 	run,
 	class,
 	global,
