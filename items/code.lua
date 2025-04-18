@@ -5793,7 +5793,7 @@ local code_cards = {
 	encoded,
 	--codes
 	crash,
-	keygen, 
+	keygen,
 	payload,
 	exploit,
 	malware,
@@ -5818,7 +5818,7 @@ local code_cards = {
 	run,
 	class,
 	global,
-	global_sticker, 
+	global_sticker,
 	variable,
 	-- crylog, -- this and quantify will be implemented later on
 	-- quantify,
