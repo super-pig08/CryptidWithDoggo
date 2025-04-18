@@ -22,7 +22,7 @@ local pointer = {
 	pos = { x = 11, y = 3 },
 	hidden = true,
 	soul_set = "Code",
-	order = 2000,
+	order = 20001,
 	atlas = "atlasnotjokers",
 	can_use = function(self, card)
 		return true
