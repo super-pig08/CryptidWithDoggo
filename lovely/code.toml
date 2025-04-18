@@ -160,7 +160,7 @@ end
 '''
 match_indent = true
 
-# Delete - multiuse 2
+# Multiuse + Function:// code 
 [[patches]]
 [patches.pattern]
 target = "functions/button_callbacks.lua"
@@ -189,11 +189,6 @@ if cry_muse then
 
 	delay(0.8)
  	if not G.GAME.modifiers.cry_beta then
-		local _area = area ~= G.pack_cards and area or G.consumeables
-  	else
-   		local _area = area ~= G.pack_cards and area or G.jokers
-     	end
- 	if not G.GAME.modifiers.cry_beta then
 		if to_big(G.consumeables.cards) < to_big(G.consumeables.config.card_limit) then
 			draw_card(G.play, G.consumeables, 1, 'up', true, card, nil, true)
 		else card:start_dissolve()
@@ -203,7 +198,130 @@ if cry_muse then
 			draw_card(G.play, G.jokers, 1, 'up', true, card, nil, true)
 		else card:start_dissolve()
 		end
-    	end
+    end
+end
+if not G.GAME.modifiers.cry_beta then -- function code + fallback
+	if card.ability.cry_function_counter == 1 then
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				local new_card = create_card(
+					"Consumeables",
+					G.consumeables,
+					nil,
+					nil,
+					nil,
+					nil,
+					G.GAME.cry_function_cards[2],
+					"cry_cryfunction"
+				)
+				new_card:add_to_deck()
+				new_card.ability.cry_function_sticker = true
+				new_card.ability.cry_function_counter = 2
+				G.consumeables:emplace(new_card)
+				G.GAME.consumeable_buffer = 0
+				return true
+			end,
+		}))
+	elseif card.ability.cry_function_counter == 2 then
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				local new_card = create_card(
+					"Consumeables",
+					G.consumeables,
+					nil,
+					nil,
+					nil,
+					nil,
+					G.GAME.cry_function_cards[3],
+					"cry_cryfunction"
+				)
+				new_card:add_to_deck()
+				G.consumeables:emplace(new_card)
+				G.GAME.consumeable_buffer = 0
+				return true
+			end,
+		}))
+	elseif card.ability.cry_function_sticker and not card.ability.cry_function_counter == 3 then
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				local new_card = create_card(
+					"Consumeables",
+					G.consumeables,
+					nil,
+					nil,
+					nil,
+					nil,
+					nil,
+					"cry_cryfunction"
+				)
+				new_card:add_to_deck()
+				G.consumeables:emplace(new_card)
+				G.GAME.consumeable_buffer = 0
+				return true
+			end,
+		}))
+	end
+  else
+	if card.ability.cry_function_counter == 1 then
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				local new_card = create_card(
+					"Consumeables",
+					G.jokers,
+					nil,
+					nil,
+					nil,
+					nil,
+					G.GAME.cry_function_cards[2],
+					"cry_cryfunction"
+				)
+				new_card:add_to_deck()
+				new_card.ability.cry_function_sticker = true
+				new_card.ability.cry_function_counter = 2
+				G.jokers:emplace(new_card)
+				G.GAME.consumeable_buffer = 0
+				return true
+			end,
+		}))
+	elseif card.ability.cry_function_counter == 2 then
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				local new_card = create_card(
+					"Consumeables",
+					G.jokers,
+					nil,
+					nil,
+					nil,
+					nil,
+					G.GAME.cry_function_cards[3],
+					"cry_cryfunction"
+				)
+				new_card:add_to_deck()
+				G.jokers:emplace(new_card)
+				G.GAME.consumeable_buffer = 0
+				return true
+			end,
+		}))
+	elseif card.ability.cry_function_sticker and not card.ability.cry_function_counter == 3 then
+		G.E_MANAGER:add_event(Event({
+			func = function()
+				local new_card = create_card(
+					"Consumeables",
+					G.jokers,
+					nil,
+					nil,
+					nil,
+					nil,
+					nil,
+					"cry_cryfunction"
+				)
+				new_card:add_to_deck()
+				G.jokers:emplace(new_card)
+				G.GAME.consumeable_buffer = 0
+				return true
+			end,
+		}))
+	end
 end
 '''
 match_indent = true
