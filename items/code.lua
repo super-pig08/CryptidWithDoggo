@@ -2680,96 +2680,97 @@ local revert = { -- ://Revert, loads the game state from the end of the last bos
 	end,
 }
 
-local cryfunction = { -- Function://, Saves the last 3 consumables used on first use, every use thereafter creates a copy of all 3 of those
-	cry_credits = {
-		idea = {
-			"HexaCryonic",
-		},
-		art = {
-			"HexaCryonic",
-		},
-		code = {
-			"Nova",
-		},
-	},
-	dependencies = {
-		items = {
-			"set_cry_code",
-		},
-	},
-	object_type = "Consumable",
-	set = "Code",
-	name = "cry-Function",
-	key = "cryfunction",
-	atlas = "atlasnotjokers",
-	pos = { x = 11, y = 0 },
-	cost = 4,
-	order = 19,
-	loc_vars = function(self, info_queue, card)
-		info_queue[#info_queue + 1] = {
-			key = "cry_function_sticker_desc",
-			set = "Other",
-			vars = {
-				(G.GAME.cry_function_cards or G.GAME.cry_last_used_consumeables)[1],
-				(G.GAME.cry_function_cards or G.GAME.cry_last_used_consumeables)[2],
-				(G.GAME.cry_function_cards or G.GAME.cry_last_used_consumeables)[3],
+local cryfunction =
+	{ -- Function://, Saves the last 3 consumables used on first use, every use thereafter creates a copy of all 3 of those
+		cry_credits = {
+			idea = {
+				"HexaCryonic",
 			},
-		}
-	end,
-	can_use = function(self, card)
-		return true
-	end,
-	use = function(self, card, area, copier)
-		if #G.consumeables.cards < G.consumeables.config.card_limit then
-			if not G.GAME.cry_function_cards and #G.GAME.cry_last_used_consumeables == 0 then
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						local new_card = create_card(
-							"Code",
-							G.consumeables,
-							nil,
-							nil,
-							nil,
-							nil,
-							"c_cry_cryfunction",
-							"cry_cryfunction"
-						)
-						new_card:add_to_deck()
-						G.consumeables:emplace(new_card)
-						G.GAME.consumeable_buffer = 0
-						return true
-					end,
-				}))
-			elseif not G.GAME.cry_function_cards then
-				G.GAME.cry_function_cards = {}
-				for i = 1, #G.GAME.cry_function_stupid_workaround do
-					G.GAME.cry_function_cards[i] = G.GAME.cry_function_stupid_workaround[i]
+			art = {
+				"HexaCryonic",
+			},
+			code = {
+				"Nova",
+			},
+		},
+		dependencies = {
+			items = {
+				"set_cry_code",
+			},
+		},
+		object_type = "Consumable",
+		set = "Code",
+		name = "cry-Function",
+		key = "cryfunction",
+		atlas = "atlasnotjokers",
+		pos = { x = 11, y = 0 },
+		cost = 4,
+		order = 19,
+		loc_vars = function(self, info_queue, card)
+			info_queue[#info_queue + 1] = {
+				key = "cry_function_sticker_desc",
+				set = "Other",
+				vars = {
+					(G.GAME.cry_function_cards or G.GAME.cry_last_used_consumeables)[1],
+					(G.GAME.cry_function_cards or G.GAME.cry_last_used_consumeables)[2],
+					(G.GAME.cry_function_cards or G.GAME.cry_last_used_consumeables)[3],
+				},
+			}
+		end,
+		can_use = function(self, card)
+			return true
+		end,
+		use = function(self, card, area, copier)
+			if #G.consumeables.cards < G.consumeables.config.card_limit then
+				if not G.GAME.cry_function_cards and #G.GAME.cry_last_used_consumeables == 0 then
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							local new_card = create_card(
+								"Code",
+								G.consumeables,
+								nil,
+								nil,
+								nil,
+								nil,
+								"c_cry_cryfunction",
+								"cry_cryfunction"
+							)
+							new_card:add_to_deck()
+							G.consumeables:emplace(new_card)
+							G.GAME.consumeable_buffer = 0
+							return true
+						end,
+					}))
+				elseif not G.GAME.cry_function_cards then
+					G.GAME.cry_function_cards = {}
+					for i = 1, #G.GAME.cry_function_stupid_workaround do
+						G.GAME.cry_function_cards[i] = G.GAME.cry_function_stupid_workaround[i]
+					end
+				else
+					G.E_MANAGER:add_event(Event({
+						func = function()
+							local new_card = create_card(
+								"Consumeables",
+								G.consumeables,
+								nil,
+								nil,
+								nil,
+								nil,
+								G.GAME.cry_function_cards[1],
+								"cry_cryfunction"
+							)
+							new_card:add_to_deck()
+							new_card.ability.cry_function_sticker = true
+							new_card.ability.cry_function_counter = 1
+							G.consumeables:emplace(new_card)
+							G.GAME.consumeable_buffer = 0
+							return true
+						end,
+					}))
 				end
-			else
-				G.E_MANAGER:add_event(Event({
-					func = function()
-						local new_card = create_card(
-							"Consumeables",
-							G.consumeables,
-							nil,
-							nil,
-							nil,
-							nil,
-							G.GAME.cry_function_cards[1],
-							"cry_cryfunction"
-						)
-						new_card:add_to_deck()
-						new_card.ability.cry_function_sticker = true
-						new_card.ability.cry_function_counter = 1
-						G.consumeables:emplace(new_card)
-						G.GAME.consumeable_buffer = 0
-						return true
-					end,
-				}))
 			end
-		end
-	end,
-}
+		end,
+	}
 local function_sticker = { -- TODO write this
 	dependencies = {
 		items = {
@@ -3258,57 +3259,58 @@ local global = { -- ://Global, gives a selected card the Global sticker
 		end
 	end,
 }
-local global_sticker = { -- Global sticker, always drawn on blind start or when booster pack opened (before hand drawn, also drawn in packs like celestial that you typically wouldn't)
-	dependencies = {
-		items = {
-			"c_cry_global",
-			"set_cry_code",
+local global_sticker =
+	{ -- Global sticker, always drawn on blind start or when booster pack opened (before hand drawn, also drawn in packs like celestial that you typically wouldn't)
+		dependencies = {
+			items = {
+				"c_cry_global",
+				"set_cry_code",
+			},
 		},
-	},
-	object_type = "Sticker",
-	atlas = "sticker",
-	pos = { x = 6, y = 5 },
-	key = "cry_global_sticker",
-	no_sticker_sheet = true,
-	prefix_config = { key = false },
-	badge_colour = HEX("14b341"),
-	order = 608,
-	draw = function(self, card) --don't draw shine                       -- i have no idea what any of this does, someone else can do all that (yes i took it from seed how could you tell)
-		local notilt = nil
-		if card.area and card.area.config.type == "deck" then
-			notilt = true
-		end
-		if not G.shared_stickers["cry_global_sticker2"] then
-			G.shared_stickers["cry_global_sticker2"] =
-				Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_sticker"], { x = 5, y = 5 })
-		end -- no matter how late i init this, it's always late, so i'm doing it in the damn draw function
+		object_type = "Sticker",
+		atlas = "sticker",
+		pos = { x = 6, y = 5 },
+		key = "cry_global_sticker",
+		no_sticker_sheet = true,
+		prefix_config = { key = false },
+		badge_colour = HEX("14b341"),
+		order = 608,
+		draw = function(self, card) --don't draw shine                       -- i have no idea what any of this does, someone else can do all that (yes i took it from seed how could you tell)
+			local notilt = nil
+			if card.area and card.area.config.type == "deck" then
+				notilt = true
+			end
+			if not G.shared_stickers["cry_global_sticker2"] then
+				G.shared_stickers["cry_global_sticker2"] =
+					Sprite(0, 0, G.CARD_W, G.CARD_H, G.ASSET_ATLAS["cry_sticker"], { x = 5, y = 5 })
+			end -- no matter how late i init this, it's always late, so i'm doing it in the damn draw function
 
-		G.shared_stickers[self.key].role.draw_major = card
-		G.shared_stickers["cry_global_sticker2"].role.draw_major = card
+			G.shared_stickers[self.key].role.draw_major = card
+			G.shared_stickers["cry_global_sticker2"].role.draw_major = card
 
-		G.shared_stickers[self.key]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
+			G.shared_stickers[self.key]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
 
-		card.hover_tilt = card.hover_tilt / 2 -- call it spaghetti, but it's what hologram does so...
-		G.shared_stickers["cry_global_sticker2"]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
-		G.shared_stickers["cry_global_sticker2"]:draw_shader(
-			"hologram",
-			nil,
-			card.ARGS.send_to_shader,
-			notilt,
-			card.children.center
-		) -- this doesn't really do much tbh, but the slight effect is nice
-		card.hover_tilt = card.hover_tilt * 2
-	end,
-	calculate = function(self, card, context)
-		if (context.setting_blind or context.open_booster) and context.cardarea == G.deck then
-			draw_card(G.deck, G.hand, nil, nil, nil, card)
-			--[[card.globalticks = (card.globalticks or 1) - 1
+			card.hover_tilt = card.hover_tilt / 2 -- call it spaghetti, but it's what hologram does so...
+			G.shared_stickers["cry_global_sticker2"]:draw_shader("dissolve", nil, nil, notilt, card.children.center)
+			G.shared_stickers["cry_global_sticker2"]:draw_shader(
+				"hologram",
+				nil,
+				card.ARGS.send_to_shader,
+				notilt,
+				card.children.center
+			) -- this doesn't really do much tbh, but the slight effect is nice
+			card.hover_tilt = card.hover_tilt * 2
+		end,
+		calculate = function(self, card, context)
+			if (context.setting_blind or context.open_booster) and context.cardarea == G.deck then
+				draw_card(G.deck, G.hand, nil, nil, nil, card)
+				--[[card.globalticks = (card.globalticks or 1) - 1
 		if card.globalticks == 0 then
 			card.global = nil
 		end--]]
-		end
-	end,
-}
+			end
+		end,
+	}
 
 local variable = { -- ://Variable, change 2 selected cards' ranks to one of your choosing
 	cry_credits = {
@@ -4320,8 +4322,7 @@ local green_seal = {
 					G.E_MANAGER:add_event(Event({
 						func = function()
 							if G.consumeables.config.card_limit > #G.consumeables.cards then
-								local c =
-									create_card("Code", G.consumeables, nil, nil, nil, nil, nil, "cry_green_seal")
+								local c = create_card("Code", G.consumeables, nil, nil, nil, nil, nil, "cry_green_seal")
 								c:add_to_deck()
 								G.consumeables:emplace(c)
 								v:juice_up()
