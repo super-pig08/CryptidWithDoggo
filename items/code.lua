@@ -5793,7 +5793,7 @@ local code_cards = {
 	encoded,
 	--codes
 	crash,
-	keygen, -- WIP; unimplemented
+	keygen, 
 	payload,
 	exploit,
 	malware,
@@ -5807,9 +5807,9 @@ local code_cards = {
 	seed,
 	rigged,
 	patch,
-	cryupdate,
-	hook, -- WIP; rework needed
-	hooked,
+	-- cryupdate, -- WIP: no effect
+	-- hook, -- WIP; rework needed
+	-- hooked,
 	oboe,
 	assemble,
 	inst,
@@ -5818,10 +5818,10 @@ local code_cards = {
 	run,
 	class,
 	global,
-	global_sticker, -- WIP; sticker art needed
+	global_sticker, 
 	variable,
-	crylog,
-	quantify,
+	-- crylog, -- this and quantify will be implemented later on
+	-- quantify,
 	divide,
 	multiply,
 	delete,
