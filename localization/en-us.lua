@@ -3258,7 +3258,7 @@ return {
 				text = {
 					"Create a card",
 					"of {C:cry_code}your choice",
-					"{C:inactive,s:0.8}(Exotic Jokers #1#excluded)",
+					"{C:inactive,s:0.8}(Exotic Jokers excluded)",
 				},
 			},
 			c_cry_replica = {
