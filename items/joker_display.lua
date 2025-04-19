@@ -140,6 +140,7 @@
 --Adroit Joker
 --Penetrating Joker
 --Treacherous Joker
+--doggo
 
 --[[
 if JokerDisplay then
