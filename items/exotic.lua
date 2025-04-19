@@ -1554,7 +1554,7 @@ local doggo = {
 	perishable_compat = false,
 	atlas = "atlasexotic",
 	order = 6969420,
-	soul_pos = { x = 2, y = 0, extra = { x = 1, y = 0 } },
+	soul_pos = { x = 5, y = 6, extra = { x = 4, y = 6 } },
 	calculate = function(self, card, context)
 		if context.joker_main and (to_big(card.ability.extra.Emult) > to_big(1)) then
 			return {
