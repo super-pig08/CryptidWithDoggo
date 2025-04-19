@@ -1536,6 +1536,93 @@ local formidiulosus = {
 		code = { "Foegro" },
 	},
 }
+local doggo = {
+	dependencies = {
+		items = {
+			"c_cry_gateway",
+			"set_cry_exotic",
+		},
+	},
+	object_type = "Joker",
+	name = "cry-doggo",
+	key = "doggo",
+	config = { extra = { Emult = 42069, Emult_mod = 42069 } },
+	pos = { x = 0, y = 0 },
+	rarity = "cry_exotic",
+	cost = 0,
+	blueprint_compat = true,
+	perishable_compat = false,
+	atlas = "atlasexotic",
+	order = 6969420,
+	soul_pos = { x = 2, y = 0, extra = { x = 1, y = 0 } },
+	calculate = function(self, card, context)
+		if context.joker_main and (to_big(card.ability.extra.Emult) > to_big(1)) then
+			return {
+				message = localize({
+					type = "variable",
+					key = "a_powmult",
+					vars = {
+						number_format(card.ability.extra.Emult),
+					},
+				}),
+				Emult_mod = lenient_bignum(card.ability.extra.Emult),
+				colour = G.C.DARK_EDITION,
+			}
+		end
+	end,
+	loc_vars = function(self, info_queue, center)
+		return {
+			vars = {
+				number_format(center.ability.extra.Emult_mod),
+				number_format(center.ability.extra.Emult),
+			},
+		}
+	end,
+	cry_credits = {
+		idea = { "Me" },
+		art = { "Jevonn" },
+		code = { "Math" },
+	},
+	init = function(self)
+		-- Hook for scaling
+		local scie = SMODS.calculate_individual_effect
+		function SMODS.calculate_individual_effect(effect, scored_card, key, amount, from_edition)
+			local ret = scie(effect, scored_card, key, amount, from_edition)
+			if
+				(
+					key == "x_mult"
+					or key == "xmult"
+					or key == "Xmult"
+					or key == "x_mult_mod"
+					or key == "xmult_mod"
+					or key == "Xmult_mod"
+					or key == "chip_mod"
+					or key == "X_chip_mod"
+					or key == "chip_mod"
+
+				) and amount ~= 1
+			then
+				for _, v in pairs(find_joker("cry-doggo")) do
+					local old = v.ability.extra.Emult
+					v.ability.extra.Emult = lenient_bignum(to_big(v.ability.extra.Emult) + v.ability.extra.Emult_mod)
+					card_eval_status_text(v, "extra", nil, nil, nil, {
+						message = localize({
+							type = "variable",
+							key = "a_powmult",
+							vars = { number_format(v.ability.extra.Emult) },
+						}),
+					})
+					Cryptid.apply_scale_mod(v, v.ability.extra.Emult_mod, old, v.ability.extra.Emult, {
+						base = { { "extra", "Emult" } },
+						scaler = { { "extra", "Emult_mod" } },
+						scaler_base = { v.ability.extra.Emult_mod },
+					})
+				end
+			end
+			return ret
+		end
+	end,
+}
 local items = {
 	gateway,
 	iterum,
@@ -1559,6 +1646,7 @@ local items = {
 	--rescribere, [NEEDS REFACTOR]
 	duplicare,
 	--formidiulosus, see tenebris
+	doggo,
 }
 return {
 	name = "Exotic Jokers",
