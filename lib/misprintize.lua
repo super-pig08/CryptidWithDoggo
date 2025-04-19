@@ -69,11 +69,7 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 	local max_booster_slots = 25
 
 	local function num_too_big(initial, min, max, limit)
-		return (
-			to_big(initial) > to_big(limit)
-			or to_big(min) > to_big(limit)
-			or to_big(max) > to_big(limit)
-		)
+		return (to_big(initial) > to_big(limit) or to_big(min) > to_big(limit) or to_big(max) > to_big(limit))
 	end
 
 	if name and ref_tbl and ref_value then
@@ -146,20 +142,15 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 						local min = override and override.min or G.GAME.modifiers.cry_misprint_min
 						local max = override and override.max or G.GAME.modifiers.cry_misprint_max
 
-						if
-							(_k == "odds")
-							and num_too_big(initial, min, max, prob_max)
-						then
+						if (_k == "odds") and num_too_big(initial, min, max, prob_max) then
 							initial = Cryptid.base_values[name][k][_k] * prob_max
 							min = 1
 							max = 1
 						end
 
 						if
-							(
-								_k == "slots"
-								and (name == "j_cry_tenebris" or name == "j_cry_negative")
-							) and num_too_big(initial, min, max, max_slots)
+							(_k == "slots" and (name == "j_cry_tenebris" or name == "j_cry_negative"))
+							and num_too_big(initial, min, max, max_slots)
 						then
 							initial = max_slots
 							min = 1
@@ -167,10 +158,8 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 						end
 
 						if
-							(
-								_k == "booster_slots"
-								and (name == "j_cry_booster")
-							) and num_too_big(initial, min, max, max_booster_slots)
+							(_k == "booster_slots" and (name == "j_cry_booster"))
+							and num_too_big(initial, min, max, max_booster_slots)
 						then
 							initial = max_booster_slots
 							min = 1
