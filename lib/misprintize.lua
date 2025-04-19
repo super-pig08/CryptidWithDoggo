@@ -70,9 +70,9 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 
 	local function num_too_big(initial, min, max, limit)
 		return (
-			to_big(initial) > to_big(max_slots)
-			or to_big(min) > to_big(max_slots)
-			or to_big(max) > to_big(max_slots)
+			to_big(initial) > to_big(limit)
+			or to_big(min) > to_big(limit)
+			or to_big(max) > to_big(limit)
 		)
 	end
 
@@ -131,7 +131,7 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 				end
 			elseif not (k == "immutable") and not (k == "colour") then
 				for _k, _v in pairs(tbl[k]) do
-					if is_number(tbl[k][_k]) and not (_k == "d_size") and not (_k == "h_size") then --Refer to above
+					if is_number(tbl[k][_k]) and can_misprintize_value(_k, tbl[k][_k]) then
 						if not Cryptid.base_values[name] then
 							Cryptid.base_values[name] = {}
 						end
@@ -148,13 +148,8 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 
 						if
 							(_k == "odds")
-							and (
-								to_big(initial) > to_big(prob_max)
-								or to_big(min) > to_big(prob_max)
-								or to_big(max) > to_big(prob_max)
-							)
+							and num_too_big(initial, min, max, prob_max)
 						then
-							-- print('\t\t\t got "odds"')
 							initial = Cryptid.base_values[name][k][_k] * prob_max
 							min = 1
 							max = 1
@@ -162,8 +157,7 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 
 						if
 							(
-								k == "slots"
-								-- Hack for jokers that give slots
+								_k == "slots"
 								and (name == "j_cry_tenebris" or name == "j_cry_negative")
 							) and num_too_big(initial, min, max, max_slots)
 						then
@@ -174,8 +168,7 @@ function Cryptid.misprintize_tbl(name, ref_tbl, ref_value, clear, override, stac
 
 						if
 							(
-								k == "booster_slots"
-								-- Hack for jokers that give booster_slots
+								_k == "booster_slots"
 								and (name == "j_cry_booster")
 							) and num_too_big(initial, min, max, max_booster_slots)
 						then
